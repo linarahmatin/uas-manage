@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminDosenRouteImport } from './routes/admin.dosen'
 import { Route as AdminMataKuliahRouteImport } from './routes/admin.mata-kuliah'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminDosenRoute = AdminDosenRouteImport.update({
+  id: '/dosen',
+  path: '/dosen',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminMataKuliahRoute = AdminMataKuliahRouteImport.update({
   id: '/mata-kuliah',
   path: '/mata-kuliah',
@@ -38,11 +44,13 @@ const AdminMataKuliahRoute = AdminMataKuliahRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/dosen': typeof AdminDosenRoute
   '/admin/mata-kuliah': typeof AdminMataKuliahRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/dosen': typeof AdminDosenRoute
   '/admin/mata-kuliah': typeof AdminMataKuliahRoute
   '/admin': typeof AdminIndexRoute
 }
@@ -50,15 +58,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/admin/dosen': typeof AdminDosenRoute
   '/admin/mata-kuliah': typeof AdminMataKuliahRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/admin/mata-kuliah' | '/admin/'
+  fullPaths: '/' | '/admin' | '/admin/dosen' | '/admin/mata-kuliah' | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin/mata-kuliah' | '/admin'
-  id: '__root__' | '/' | '/admin' | '/admin/mata-kuliah' | '/admin/'
+  to: '/' | '/admin/dosen' | '/admin/mata-kuliah' | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/admin/dosen'
+    | '/admin/mata-kuliah'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -89,6 +104,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/dosen': {
+      id: '/admin/dosen'
+      path: '/dosen'
+      fullPath: '/admin/dosen'
+      preLoaderRoute: typeof AdminDosenRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/mata-kuliah': {
       id: '/admin/mata-kuliah'
       path: '/mata-kuliah'
@@ -100,11 +122,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminDosenRoute: typeof AdminDosenRoute
   AdminMataKuliahRoute: typeof AdminMataKuliahRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminDosenRoute: AdminDosenRoute,
   AdminMataKuliahRoute: AdminMataKuliahRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
