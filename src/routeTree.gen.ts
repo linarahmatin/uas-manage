@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminDosenRouteImport } from './routes/admin.dosen'
+import { Route as AdminJadwalRouteImport } from './routes/admin.jadwal'
 import { Route as AdminMahasiswaRouteImport } from './routes/admin.mahasiswa'
 import { Route as AdminMataKuliahRouteImport } from './routes/admin.mata-kuliah'
 import { Route as AdminSoalRouteImport } from './routes/admin.soal'
@@ -37,6 +38,11 @@ const AdminDosenRoute = AdminDosenRouteImport.update({
   path: '/dosen',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminJadwalRoute = AdminJadwalRouteImport.update({
+  id: '/jadwal',
+  path: '/jadwal',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminMahasiswaRoute = AdminMahasiswaRouteImport.update({
   id: '/mahasiswa',
   path: '/mahasiswa',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/dosen': typeof AdminDosenRoute
+  '/admin/jadwal': typeof AdminJadwalRoute
   '/admin/mahasiswa': typeof AdminMahasiswaRoute
   '/admin/mata-kuliah': typeof AdminMataKuliahRoute
   '/admin/soal': typeof AdminSoalRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/dosen': typeof AdminDosenRoute
+  '/admin/jadwal': typeof AdminJadwalRoute
   '/admin/mahasiswa': typeof AdminMahasiswaRoute
   '/admin/mata-kuliah': typeof AdminMataKuliahRoute
   '/admin/soal': typeof AdminSoalRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/dosen': typeof AdminDosenRoute
+  '/admin/jadwal': typeof AdminJadwalRoute
   '/admin/mahasiswa': typeof AdminMahasiswaRoute
   '/admin/mata-kuliah': typeof AdminMataKuliahRoute
   '/admin/soal': typeof AdminSoalRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin/dosen'
+    | '/admin/jadwal'
     | '/admin/mahasiswa'
     | '/admin/mata-kuliah'
     | '/admin/soal'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/admin/dosen'
+    | '/admin/jadwal'
     | '/admin/mahasiswa'
     | '/admin/mata-kuliah'
     | '/admin/soal'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/admin/dosen'
+    | '/admin/jadwal'
     | '/admin/mahasiswa'
     | '/admin/mata-kuliah'
     | '/admin/soal'
@@ -144,6 +156,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDosenRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/jadwal': {
+      id: '/admin/jadwal'
+      path: '/jadwal'
+      fullPath: '/admin/jadwal'
+      preLoaderRoute: typeof AdminJadwalRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/mahasiswa': {
       id: '/admin/mahasiswa'
       path: '/mahasiswa'
@@ -170,6 +189,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminDosenRoute: typeof AdminDosenRoute
+  AdminJadwalRoute: typeof AdminJadwalRoute
   AdminMahasiswaRoute: typeof AdminMahasiswaRoute
   AdminMataKuliahRoute: typeof AdminMataKuliahRoute
   AdminSoalRoute: typeof AdminSoalRoute
@@ -178,6 +198,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminDosenRoute: AdminDosenRoute,
+  AdminJadwalRoute: AdminJadwalRoute,
   AdminMahasiswaRoute: AdminMahasiswaRoute,
   AdminMataKuliahRoute: AdminMataKuliahRoute,
   AdminSoalRoute: AdminSoalRoute,
