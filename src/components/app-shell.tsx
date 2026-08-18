@@ -240,7 +240,7 @@ export function AppShell({
             </div>
           </header>
 
-          <main className="flex-1 space-y-6 p-4 sm:p-6">
+          <div className="flex-1 space-y-6 p-4 sm:p-6">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
                 <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{title}</h1>
@@ -251,7 +251,7 @@ export function AppShell({
               {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
             </div>
             {children}
-          </main>
+          </div>
         </SidebarInset>
       </div>
     </SidebarProvider>
