@@ -60,7 +60,7 @@ export const Route = createFileRoute("/admin/")({
       },
     ],
   }),
-  component: AdminDashboard;
+  component: AdminDashboard,
 });
 
 const stats = [
