@@ -38,7 +38,7 @@ export function SearchInput({
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
-  className?: string;
+  className?: string | undefined;
 }) {
   return (
     <div className={cn("relative w-full sm:max-w-xs", className)}>
@@ -134,7 +134,7 @@ export function EmptyState({
 }: {
   title?: string;
   description?: string;
-  action?: ReactNode;
+  action?: ReactNode | undefined;
 }) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 px-6 py-14 text-center">
@@ -163,7 +163,7 @@ export function LoadingState({ rows = 4 }: { rows?: number }) {
   );
 }
 
-export function ErrorState({ onRetry }: { onRetry?: () => void }) {
+export function ErrorState({ onRetry }: { onRetry?: (() => void) | undefined }) {
   return (
     <div className="flex flex-col items-center gap-3 px-6 py-12 text-center">
       <div className="flex size-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">
@@ -192,7 +192,7 @@ export function ConfirmDeleteDialog({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  itemName?: string;
+  itemName?: string | undefined;
   onConfirm: () => void;
 }) {
   return (
