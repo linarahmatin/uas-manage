@@ -55,22 +55,53 @@ export type Role = "admin";
 
 type NavItem = { title: string; url: string; icon: LucideIcon };
 
-const adminNav: NavItem[] = [
-  { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
-  { title: "Data Mata Kuliah", url: "/admin/mata-kuliah", icon: BookOpen },
-  { title: "Data Dosen", url: "/admin/dosen", icon: Users },
-  { title: "Data Mahasiswa", url: "/admin/mahasiswa", icon: UserRound },
-  { title: "Data Soal Ujian", url: "/admin/soal", icon: FileText },
-  { title: "Jadwal UAS", url: "/admin/jadwal", icon: CalendarDays },
-  { title: "Ruang Ujian", url: "/admin/ruang", icon: DoorOpen },
-  { title: "Dosen Pengawas", url: "/admin/pengawas", icon: ShieldCheck },
-  { title: "Pengumuman", url: "/admin/pengumuman", icon: Megaphone },
-  { title: "Laporan", url: "/admin/laporan", icon: BarChart3 },
-  { title: "Pengaturan", url: "/admin/pengaturan", icon: Settings },
+type NavGroup = { label: string; items: NavItem[] };
+
+const adminNavGroups: NavGroup[] = [
+  {
+    label: "Menu Utama",
+    items: [{ title: "Dashboard", url: "/admin", icon: LayoutDashboard }],
+  },
+  {
+    label: "Master Data",
+    items: [
+      { title: "Data Mata Kuliah", url: "/admin/mata-kuliah", icon: BookOpen },
+      { title: "Data Dosen", url: "/admin/dosen", icon: Users },
+      { title: "Data Mahasiswa", url: "/admin/mahasiswa", icon: UserRound },
+    ],
+  },
+  {
+    label: "Manajemen UAS",
+    items: [
+      { title: "Data Soal Ujian", url: "/admin/soal", icon: FileText },
+      { title: "Jadwal UAS", url: "/admin/jadwal", icon: CalendarDays },
+      { title: "Ruang Ujian", url: "/admin/ruang", icon: DoorOpen },
+      { title: "Dosen Pengawas", url: "/admin/pengawas", icon: ShieldCheck },
+    ],
+  },
+  {
+    label: "Informasi",
+    items: [{ title: "Pengumuman", url: "/admin/pengumuman", icon: Megaphone }],
+  },
+  {
+    label: "Sistem",
+    items: [
+      { title: "Laporan", url: "/admin/laporan", icon: BarChart3 },
+      { title: "Pengaturan", url: "/admin/pengaturan", icon: Settings },
+    ],
+  },
 ];
 
-const roleProfile: Record<Role, { nav: NavItem[]; nama: string; label: string; sub: string }> = {
-  admin: { nav: adminNav, nama: "Panitia UAS", label: "Admin / Panitia", sub: "admin@ti.ac.id" },
+const roleProfile: Record<
+  Role,
+  { groups: NavGroup[]; nama: string; label: string; sub: string }
+> = {
+  admin: {
+    groups: adminNavGroups,
+    nama: "Panitia UAS",
+    label: "Admin / Panitia",
+    sub: "admin@ti.ac.id",
+  },
 };
 
 function AppSidebar({ role }: { role: Role }) {
