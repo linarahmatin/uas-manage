@@ -17,6 +17,7 @@ import { Route as AdminJadwalRouteImport } from './routes/admin.jadwal'
 import { Route as AdminLaporanRouteImport } from './routes/admin.laporan'
 import { Route as AdminMahasiswaRouteImport } from './routes/admin.mahasiswa'
 import { Route as AdminMataKuliahRouteImport } from './routes/admin.mata-kuliah'
+import { Route as AdminPengaturanRouteImport } from './routes/admin.pengaturan'
 import { Route as AdminPengawasRouteImport } from './routes/admin.pengawas'
 import { Route as AdminPengumumanRouteImport } from './routes/admin.pengumuman'
 import { Route as AdminRuangRouteImport } from './routes/admin.ruang'
@@ -62,6 +63,11 @@ const AdminMataKuliahRoute = AdminMataKuliahRouteImport.update({
   path: '/mata-kuliah',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminPengaturanRoute = AdminPengaturanRouteImport.update({
+  id: '/pengaturan',
+  path: '/pengaturan',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPengawasRoute = AdminPengawasRouteImport.update({
   id: '/pengawas',
   path: '/pengawas',
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/admin/laporan': typeof AdminLaporanRoute
   '/admin/mahasiswa': typeof AdminMahasiswaRoute
   '/admin/mata-kuliah': typeof AdminMataKuliahRoute
+  '/admin/pengaturan': typeof AdminPengaturanRoute
   '/admin/pengawas': typeof AdminPengawasRoute
   '/admin/pengumuman': typeof AdminPengumumanRoute
   '/admin/ruang': typeof AdminRuangRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByTo {
   '/admin/laporan': typeof AdminLaporanRoute
   '/admin/mahasiswa': typeof AdminMahasiswaRoute
   '/admin/mata-kuliah': typeof AdminMataKuliahRoute
+  '/admin/pengaturan': typeof AdminPengaturanRoute
   '/admin/pengawas': typeof AdminPengawasRoute
   '/admin/pengumuman': typeof AdminPengumumanRoute
   '/admin/ruang': typeof AdminRuangRoute
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/admin/laporan': typeof AdminLaporanRoute
   '/admin/mahasiswa': typeof AdminMahasiswaRoute
   '/admin/mata-kuliah': typeof AdminMataKuliahRoute
+  '/admin/pengaturan': typeof AdminPengaturanRoute
   '/admin/pengawas': typeof AdminPengawasRoute
   '/admin/pengumuman': typeof AdminPengumumanRoute
   '/admin/ruang': typeof AdminRuangRoute
@@ -135,6 +144,7 @@ export interface FileRouteTypes {
     | '/admin/laporan'
     | '/admin/mahasiswa'
     | '/admin/mata-kuliah'
+    | '/admin/pengaturan'
     | '/admin/pengawas'
     | '/admin/pengumuman'
     | '/admin/ruang'
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/admin/laporan'
     | '/admin/mahasiswa'
     | '/admin/mata-kuliah'
+    | '/admin/pengaturan'
     | '/admin/pengawas'
     | '/admin/pengumuman'
     | '/admin/ruang'
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '/admin/laporan'
     | '/admin/mahasiswa'
     | '/admin/mata-kuliah'
+    | '/admin/pengaturan'
     | '/admin/pengawas'
     | '/admin/pengumuman'
     | '/admin/ruang'
@@ -232,6 +244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMataKuliahRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/pengaturan': {
+      id: '/admin/pengaturan'
+      path: '/pengaturan'
+      fullPath: '/admin/pengaturan'
+      preLoaderRoute: typeof AdminPengaturanRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/pengawas': {
       id: '/admin/pengawas'
       path: '/pengawas'
@@ -269,6 +288,7 @@ interface AdminRouteChildren {
   AdminLaporanRoute: typeof AdminLaporanRoute
   AdminMahasiswaRoute: typeof AdminMahasiswaRoute
   AdminMataKuliahRoute: typeof AdminMataKuliahRoute
+  AdminPengaturanRoute: typeof AdminPengaturanRoute
   AdminPengawasRoute: typeof AdminPengawasRoute
   AdminPengumumanRoute: typeof AdminPengumumanRoute
   AdminRuangRoute: typeof AdminRuangRoute
@@ -282,6 +302,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminLaporanRoute: AdminLaporanRoute,
   AdminMahasiswaRoute: AdminMahasiswaRoute,
   AdminMataKuliahRoute: AdminMataKuliahRoute,
+  AdminPengaturanRoute: AdminPengaturanRoute,
   AdminPengawasRoute: AdminPengawasRoute,
   AdminPengumumanRoute: AdminPengumumanRoute,
   AdminRuangRoute: AdminRuangRoute,

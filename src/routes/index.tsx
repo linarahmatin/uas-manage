@@ -1,5 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { GraduationCap, Lock, Mail, ShieldCheck, UserRound, Users } from "lucide-react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { GraduationCap, Lock, Mail, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -35,8 +35,6 @@ export const Route = createFileRoute("/")({
 
 const roles = [
   { value: "admin", label: "Admin / Panitia UAS", icon: ShieldCheck, path: "/admin" },
-  { value: "dosen", label: "Dosen", icon: Users, path: "/dosen" },
-  { value: "mahasiswa", label: "Mahasiswa", icon: UserRound, path: "/mahasiswa" },
 ] as const;
 
 function LoginPage() {
@@ -116,7 +114,7 @@ function LoginPage() {
 
           <form onSubmit={submit} className="space-y-4 rounded-2xl border bg-card p-6 shadow-card">
             <div className="space-y-2">
-              <Label htmlFor="role">Masuk sebagai</Label>
+              <Label htmlFor="role">Masuk sebagai (akses admin)</Label>
               <Select value={role} onValueChange={setRole}>
                 <SelectTrigger id="role">
                   <SelectValue />
@@ -171,18 +169,6 @@ function LoginPage() {
             </div>
           </form>
 
-          <div className="mt-6 grid grid-cols-3 gap-2">
-            {roles.map((r) => (
-              <Link
-                key={r.value}
-                to={r.path}
-                className="flex flex-col items-center gap-1.5 rounded-xl border bg-card px-2 py-3 text-center text-[11px] font-medium text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary"
-              >
-                <r.icon className="size-4" />
-                {r.label.split(" / ")[0]}
-              </Link>
-            ))}
-          </div>
         </div>
       </main>
     </div>
