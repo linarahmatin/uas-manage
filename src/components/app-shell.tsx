@@ -15,8 +15,6 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  ClipboardList,
-  CalendarCheck,
   type LucideIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
@@ -53,7 +51,7 @@ import {
 } from "@/components/ui/sidebar";
 import { notifikasi } from "@/lib/mock-data";
 
-export type Role = "admin" | "dosen" | "mahasiswa";
+export type Role = "admin";
 
 type NavItem = { title: string; url: string; icon: LucideIcon };
 
@@ -71,20 +69,8 @@ const adminNav: NavItem[] = [
   { title: "Pengaturan", url: "/admin/pengaturan", icon: Settings },
 ];
 
-const dosenNav: NavItem[] = [
-  { title: "Dashboard", url: "/dosen", icon: LayoutDashboard },
-  { title: "Input Soal UAS", url: "/dosen", icon: ClipboardList },
-];
-
-const mahasiswaNav: NavItem[] = [
-  { title: "Dashboard", url: "/mahasiswa", icon: LayoutDashboard },
-  { title: "Jadwal UAS", url: "/mahasiswa", icon: CalendarCheck },
-];
-
 const roleProfile: Record<Role, { nav: NavItem[]; nama: string; label: string; sub: string }> = {
   admin: { nav: adminNav, nama: "Panitia UAS", label: "Admin / Panitia", sub: "admin@ti.ac.id" },
-  dosen: { nav: dosenNav, nama: "Sesy Tana Lina, M.Kom", label: "Dosen", sub: "sesy.lina@ti.ac.id" },
-  mahasiswa: { nav: mahasiswaNav, nama: "Aditya Pratama", label: "Mahasiswa", sub: "2211081001" },
 };
 
 function AppSidebar({ role }: { role: Role }) {
@@ -152,8 +138,8 @@ export function AppShell({
   role: Role;
   breadcrumb: string[];
   title: string;
-  description?: string;
-  actions?: ReactNode;
+  description?: string | undefined;
+  actions?: ReactNode | undefined;
   children: ReactNode;
 }) {
   const profile = roleProfile[role];
