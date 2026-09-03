@@ -35,8 +35,6 @@ export const Route = createFileRoute("/")({
 
 const roles = [
   { value: "admin", label: "Admin / Panitia UAS", icon: ShieldCheck, path: "/admin" },
-  { value: "dosen", label: "Dosen", icon: Users, path: "/dosen" },
-  { value: "mahasiswa", label: "Mahasiswa", icon: UserRound, path: "/mahasiswa" },
 ] as const;
 
 function LoginPage() {
