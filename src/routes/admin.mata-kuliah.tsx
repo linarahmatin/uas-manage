@@ -40,7 +40,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useTable } from "@/hooks/use-table";
-import { mataKuliah, type MataKuliah } from "@/lib/mock-data";
+import { type MataKuliah } from "@/lib/mock-data";
+import { mataKuliahStore, useCrud } from "@/lib/store";
 
 export const Route = createFileRoute("/admin/mata-kuliah")({
   head: () => ({
@@ -57,22 +58,40 @@ export const Route = createFileRoute("/admin/mata-kuliah")({
   component: MataKuliahPage,
 });
 
+const emptyMataKuliah: MataKuliah = {
+  kode: "",
+  nama: "",
+  semester: 2,
+  kelas: "",
+  sks: 3,
+  dosen: "",
+  jenisUjian: "Tulis",
+  status: "Aktif",
+};
+
 function MataKuliahPage() {
+  const crud = useCrud<MataKuliah>(mataKuliahStore, emptyMataKuliah);
   const table = useTable<MataKuliah>(
-    mataKuliah,
+    crud.rows,
     (row, q) =>
       row.nama.toLowerCase().includes(q) ||
       row.kode.toLowerCase().includes(q) ||
       row.dosen.toLowerCase().includes(q),
   );
   const [semester, setSemester] = useState("all");
-  const [formOpen, setFormOpen] = useState(false);
-  const [editing, setEditing] = useState<MataKuliah | null>(null);
-  const [deleting, setDeleting] = useState<MataKuliah | null>(null);
 
   const applySemester = (v: string) => {
     setSemester(v);
     table.filter((row) => v === "all" || String(row.semester) === v);
+  };
+
+  const handleSave = () => {
+    if (!crud.form.kode.trim() || !crud.form.nama.trim()) {
+      toast.error("Kode dan nama mata kuliah wajib diisi.");
+      return;
+    }
+    const wasEditing = crud.save();
+    toast.success(wasEditing ? "Mata kuliah diperbarui." : "Mata kuliah ditambahkan.");
   };
 
   return (
@@ -82,13 +101,7 @@ function MataKuliahPage() {
       title="Data Mata Kuliah"
       description="Daftar mata kuliah yang diujikan pada UAS semester ini."
       actions={
-        <Button
-          size="sm"
-          onClick={() => {
-            setEditing(null);
-            setFormOpen(true);
-          }}
-        >
+        <Button size="sm" onClick={crud.openCreate}>
           <Plus className="mr-2 size-4" /> Tambah Mata Kuliah
         </Button>
       }
@@ -156,10 +169,7 @@ function MataKuliahPage() {
                             size="icon"
                             variant="ghost"
                             aria-label="Edit"
-                            onClick={() => {
-                              setEditing(row);
-                              setFormOpen(true);
-                            }}
+                            onClick={() => crud.openEdit(row)}
                           >
                             <Pencil className="size-4" />
                           </Button>
@@ -168,7 +178,7 @@ function MataKuliahPage() {
                             variant="ghost"
                             aria-label="Hapus"
                             className="text-destructive"
-                            onClick={() => setDeleting(row)}
+                            onClick={() => crud.setDeleting(row)}
                           >
                             <Trash2 className="size-4" />
                           </Button>
@@ -181,47 +191,63 @@ function MataKuliahPage() {
             </div>
           )}
 
-          <Pagination
-            page={table.page}
-            totalPages={table.totalPages}
-            total={table.total}
-            onPage={table.setPage}
-          />
+          <Pagination page={table.page} totalPages={table.totalPages} total={table.total} onPage={table.setPage} />
         </CardContent>
       </Card>
 
-      <Dialog open={formOpen} onOpenChange={setFormOpen}>
+      <Dialog open={crud.open} onOpenChange={crud.setOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{editing ? "Edit Mata Kuliah" : "Tambah Mata Kuliah"}</DialogTitle>
-            <DialogDescription>
-              Lengkapi data mata kuliah yang akan diujikan pada UAS.
-            </DialogDescription>
+            <DialogTitle>{crud.isEditing ? "Edit Mata Kuliah" : "Tambah Mata Kuliah"}</DialogTitle>
+            <DialogDescription>Data mata kuliah dipakai saat penyusunan jadwal dan soal UAS.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label>Kode Mata Kuliah</Label>
-              <Input defaultValue={editing?.kode} placeholder="TI3201" />
+              <Label>Kode</Label>
+              <Input
+                value={crud.form.kode}
+                onChange={(e) => crud.set("kode", e.target.value)}
+                placeholder="TI3201"
+              />
             </div>
             <div className="space-y-2">
               <Label>Nama Mata Kuliah</Label>
-              <Input defaultValue={editing?.nama} placeholder="Rekayasa Perangkat Lunak" />
+              <Input
+                value={crud.form.nama}
+                onChange={(e) => crud.set("nama", e.target.value)}
+                placeholder="Basis Data"
+              />
             </div>
             <div className="space-y-2">
               <Label>Semester</Label>
-              <Input defaultValue={editing?.semester} placeholder="6" />
+              <Input
+                type="number"
+                value={crud.form.semester}
+                onChange={(e) => crud.set("semester", Number(e.target.value))}
+              />
             </div>
             <div className="space-y-2">
               <Label>Kelas</Label>
-              <Input defaultValue={editing?.kelas} placeholder="TI-6A" />
+              <Input
+                value={crud.form.kelas}
+                onChange={(e) => crud.set("kelas", e.target.value)}
+                placeholder="TI-6A"
+              />
             </div>
             <div className="space-y-2">
               <Label>SKS</Label>
-              <Input defaultValue={editing?.sks} placeholder="3" />
+              <Input
+                type="number"
+                value={crud.form.sks}
+                onChange={(e) => crud.set("sks", Number(e.target.value))}
+              />
             </div>
             <div className="space-y-2">
               <Label>Jenis Ujian</Label>
-              <Select defaultValue={editing?.jenisUjian ?? "Tulis"}>
+              <Select
+                value={crud.form.jenisUjian}
+                onValueChange={(v) => crud.set("jenisUjian", v as MataKuliah["jenisUjian"])}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -234,34 +260,50 @@ function MataKuliahPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2 sm:col-span-2">
+            <div className="space-y-2">
               <Label>Dosen Pengampu</Label>
-              <Input defaultValue={editing?.dosen} placeholder="Nama dosen pengampu" />
+              <Input
+                value={crud.form.dosen}
+                onChange={(e) => crud.set("dosen", e.target.value)}
+                placeholder="Nama, gelar"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Status</Label>
+              <Select
+                value={crud.form.status}
+                onValueChange={(v) => crud.set("status", v as MataKuliah["status"])}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {["Aktif", "Tidak Aktif"].map((o) => (
+                    <SelectItem key={o} value={o}>
+                      {o}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setFormOpen(false)}>
+            <Button variant="outline" onClick={() => crud.setOpen(false)}>
               Batal
             </Button>
-            <Button
-              onClick={() => {
-                setFormOpen(false);
-                toast.success(editing ? "Mata kuliah diperbarui." : "Mata kuliah ditambahkan.");
-              }}
-            >
-              Simpan
-            </Button>
+            <Button onClick={handleSave}>Simpan</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <ConfirmDeleteDialog
-        open={!!deleting}
-        onOpenChange={(v) => !v && setDeleting(null)}
-        itemName={deleting?.nama}
+        open={!!crud.deleting}
+        onOpenChange={(v) => !v && crud.setDeleting(null)}
+        itemName={crud.deleting?.nama}
         onConfirm={() => {
-          toast.success(`${deleting?.nama} dihapus.`);
-          setDeleting(null);
+          const nama = crud.deleting?.nama;
+          crud.confirmDelete();
+          toast.success(`${nama} dihapus.`);
         }}
       />
     </AppShell>
