@@ -338,7 +338,11 @@ export function AppShell({
                     <p className="mt-1.5 max-w-2xl text-sm text-primary-foreground/80">{description}</p>
                   )}
                 </div>
-                {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
+                {actions && (
+                  <div className="flex flex-wrap items-center gap-2 [&_.bg-background]:border-transparent [&_.bg-background]:bg-white/15 [&_.bg-background]:text-primary-foreground [&_.bg-background]:backdrop-blur [&_.bg-background:hover]:bg-white/25">
+                    {actions}
+                  </div>
+                )}
               </div>
             </div>
             {children}
