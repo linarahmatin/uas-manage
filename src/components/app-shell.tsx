@@ -327,14 +327,23 @@ export function AppShell({
           </header>
 
           <div className="flex-1 space-y-6 p-4 sm:p-6">
-            <div className="flex flex-wrap items-end justify-between gap-3">
-              <div>
-                <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{title}</h1>
-                {description && (
-                  <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{description}</p>
+            <div className="bg-hero-panel relative overflow-hidden rounded-2xl px-5 py-5 shadow-panel sm:px-7 sm:py-6">
+              <div className="pointer-events-none absolute -right-10 -top-16 size-52 rounded-full bg-white/10 blur-2xl" />
+              <div className="pointer-events-none absolute -bottom-20 left-1/3 size-48 rounded-full bg-white/5 blur-2xl" />
+              <div className="relative flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <p className="text-eyebrow text-primary-foreground/70">{breadcrumb.join(" / ")}</p>
+                  <h1 className="mt-1 text-xl font-bold tracking-tight sm:text-2xl">{title}</h1>
+                  {description && (
+                    <p className="mt-1.5 max-w-2xl text-sm text-primary-foreground/80">{description}</p>
+                  )}
+                </div>
+                {actions && (
+                  <div className="hero-actions flex flex-wrap items-center gap-2">
+                    {actions}
+                  </div>
                 )}
               </div>
-              {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
             </div>
             {children}
           </div>
