@@ -339,7 +339,7 @@ export function AppShell({
                   )}
                 </div>
                 {actions && (
-                  <div className="flex flex-wrap items-center gap-2 [&_.bg-background]:border-transparent [&_.bg-background]:bg-white/15 [&_.bg-background]:text-primary-foreground [&_.bg-background]:backdrop-blur [&_.bg-background:hover]:bg-white/25">
+                  <div className="hero-actions flex flex-wrap items-center gap-2">
                     {actions}
                   </div>
                 )}
