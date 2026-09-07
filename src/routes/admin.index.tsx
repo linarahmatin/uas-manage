@@ -64,11 +64,11 @@ export const Route = createFileRoute("/admin/")({
 });
 
 const stats = [
-  { label: "Total Mata Kuliah", value: 12, icon: BookOpen, note: "10 aktif" },
-  { label: "Total Dosen", value: 6, icon: Users, note: "5 aktif" },
-  { label: "Total Jadwal UAS", value: 32, icon: CalendarDays, note: "24 - 28 Agustus" },
-  { label: "Total Ruang", value: 9, icon: DoorOpen, note: "6 terpakai" },
-  { label: "Total Pengawas", value: 8, icon: ShieldCheck, note: "2 menunggu" },
+  { label: "Total Mata Kuliah", value: 12, icon: BookOpen, note: "10 aktif", tint: "bg-primary/10 text-primary" },
+  { label: "Total Dosen", value: 6, icon: Users, note: "5 aktif", tint: "bg-brand-sky/15 text-brand-sky" },
+  { label: "Total Jadwal UAS", value: 32, icon: CalendarDays, note: "24 - 28 Agustus", tint: "bg-brand-teal/15 text-brand-teal" },
+  { label: "Total Ruang", value: 9, icon: DoorOpen, note: "6 terpakai", tint: "bg-warning/15 text-warning" },
+  { label: "Total Pengawas", value: 8, icon: ShieldCheck, note: "2 menunggu", tint: "bg-brand-violet/15 text-brand-violet" },
 ];
 
 function AdminDashboard() {
@@ -95,14 +95,14 @@ function AdminDashboard() {
     >
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {stats.map((s) => (
-          <Card key={s.label} className="shadow-card">
+          <Card key={s.label} className="card-accent shadow-card transition-shadow hover:shadow-panel">
             <CardContent className="flex items-start justify-between gap-3 p-5">
               <div>
                 <p className="text-xs font-medium text-muted-foreground">{s.label}</p>
                 <p className="mt-1 text-3xl font-bold tracking-tight">{s.value}</p>
                 <p className="mt-1 text-[11px] text-muted-foreground">{s.note}</p>
               </div>
-              <span className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <span className={`flex size-10 items-center justify-center rounded-xl ${s.tint}`}>
                 <s.icon className="size-4.5" />
               </span>
             </CardContent>
