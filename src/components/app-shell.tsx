@@ -1,7 +1,10 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   Bell,
+  ChevronDown,
   ChevronRight,
+  ClipboardList,
+  Database,
   GraduationCap,
   LayoutDashboard,
   BookOpen,
@@ -17,9 +20,15 @@ import {
   LogOut,
   type LucideIcon,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import { Badge } from "@/components/ui/badge";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
