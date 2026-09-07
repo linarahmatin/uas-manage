@@ -55,7 +55,12 @@ export type Role = "admin";
 
 type NavItem = { title: string; url: string; icon: LucideIcon };
 
-type NavGroup = { label: string; items: NavItem[] };
+type NavGroup = {
+  label: string;
+  items: NavItem[];
+  icon?: LucideIcon;
+  collapsible?: boolean;
+};
 
 const adminNavGroups: NavGroup[] = [
   {
@@ -64,6 +69,8 @@ const adminNavGroups: NavGroup[] = [
   },
   {
     label: "Master Data",
+    icon: Database,
+    collapsible: true,
     items: [
       { title: "Data Mata Kuliah", url: "/admin/mata-kuliah", icon: BookOpen },
       { title: "Data Dosen", url: "/admin/dosen", icon: Users },
@@ -72,6 +79,8 @@ const adminNavGroups: NavGroup[] = [
   },
   {
     label: "Manajemen UAS",
+    icon: ClipboardList,
+    collapsible: true,
     items: [
       { title: "Data Soal Ujian", url: "/admin/soal", icon: FileText },
       { title: "Jadwal UAS", url: "/admin/jadwal", icon: CalendarDays },
@@ -104,6 +113,61 @@ const roleProfile: Record<
   },
 };
 
+function NavLinks({ items, pathname }: { items: NavItem[]; pathname: string }) {
+  return (
+    <SidebarMenu>
+      {items.map((item) => (
+        <SidebarMenuItem key={item.title}>
+          <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
+            <Link to={item.url}>
+              <item.icon />
+              <span>{item.title}</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </SidebarMenu>
+  );
+}
+
+function CollapsibleNavGroup({ group, pathname }: { group: NavGroup; pathname: string }) {
+  const hasActive = group.items.some((item) => item.url === pathname);
+  const [open, setOpen] = useState(hasActive);
+
+  useEffect(() => {
+    if (hasActive) setOpen(true);
+  }, [hasActive]);
+
+  const GroupIcon = group.icon ?? Database;
+
+  return (
+    <Collapsible open={open} onOpenChange={setOpen} className="group/collapsible">
+      <SidebarGroup>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton
+                tooltip={group.label}
+                isActive={hasActive && !open}
+                className="font-semibold"
+              >
+                <GroupIcon />
+                <span>{group.label}</span>
+                <ChevronDown className="ml-auto size-4 shrink-0 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-180 group-data-[collapsible=icon]:hidden" />
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+          </SidebarMenuItem>
+        </SidebarMenu>
+        <CollapsibleContent>
+          <SidebarGroupContent className="pl-2 group-data-[collapsible=icon]:pl-0">
+            <NavLinks items={group.items} pathname={pathname} />
+          </SidebarGroupContent>
+        </CollapsibleContent>
+      </SidebarGroup>
+    </Collapsible>
+  );
+}
+
 function AppSidebar({ role }: { role: Role }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { groups } = roleProfile[role];
@@ -123,30 +187,20 @@ function AppSidebar({ role }: { role: Role }) {
       </SidebarHeader>
 
       <SidebarContent>
-        {groups.map((group) => (
-          <SidebarGroup key={group.label}>
-            <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {group.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={pathname === item.url}
-                      tooltip={item.title}
-                    >
-                      <Link to={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
+        {groups.map((group) =>
+          group.collapsible ? (
+            <CollapsibleNavGroup key={group.label} group={group} pathname={pathname} />
+          ) : (
+            <SidebarGroup key={group.label}>
+              <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <NavLinks items={group.items} pathname={pathname} />
+              </SidebarGroupContent>
+            </SidebarGroup>
+          ),
+        )}
       </SidebarContent>
+
 
       <SidebarFooter className="border-t border-sidebar-border">
         <SidebarMenu>
