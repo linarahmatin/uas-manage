@@ -106,6 +106,7 @@ function PengumumanPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-12 text-center">No</TableHead>
                     <TableHead>Judul</TableHead>
                     <TableHead className="min-w-64">Isi Pengumuman</TableHead>
                     <TableHead>Tanggal</TableHead>
@@ -115,8 +116,9 @@ function PengumumanPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {table.paged.map((row) => (
+                  {table.paged.map((row, i) => (
                     <TableRow key={row.id}>
+                      <TableCell className="text-center text-sm text-muted-foreground">{table.rowNo(i)}</TableCell>
                       <TableCell className="font-medium">{row.judul}</TableCell>
                       <TableCell className="max-w-sm text-sm text-muted-foreground">
                         <span className="line-clamp-2">{row.isi}</span>

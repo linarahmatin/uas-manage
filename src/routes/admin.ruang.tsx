@@ -115,6 +115,7 @@ function RuangPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-12 text-center">No</TableHead>
                     <TableHead>Nama Ruang</TableHead>
                     <TableHead>Gedung</TableHead>
                     <TableHead>Lantai</TableHead>
@@ -125,8 +126,9 @@ function RuangPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {table.paged.map((row) => (
+                  {table.paged.map((row, i) => (
                     <TableRow key={row.nama}>
+                      <TableCell className="text-center text-sm text-muted-foreground">{table.rowNo(i)}</TableCell>
                       <TableCell className="font-medium">{row.nama}</TableCell>
                       <TableCell>{row.gedung}</TableCell>
                       <TableCell>{row.lantai}</TableCell>

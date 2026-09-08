@@ -115,6 +115,7 @@ function PengawasPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-12 text-center">No</TableHead>
                     <TableHead>Nama Dosen</TableHead>
                     <TableHead>Tanggal</TableHead>
                     <TableHead>Jam</TableHead>
@@ -126,8 +127,9 @@ function PengawasPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {table.paged.map((row) => (
+                  {table.paged.map((row, i) => (
                     <TableRow key={row.id}>
+                      <TableCell className="text-center text-sm text-muted-foreground">{table.rowNo(i)}</TableCell>
                       <TableCell className="font-medium">{row.nama}</TableCell>
                       <TableCell className="whitespace-nowrap text-sm">{row.tanggal}</TableCell>
                       <TableCell className="whitespace-nowrap text-sm">{row.jam}</TableCell>
