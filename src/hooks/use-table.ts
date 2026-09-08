@@ -37,5 +37,7 @@ export function useTable<T>(
     setPage,
     totalPages,
     total: filtered.length,
+    pageSize,
+    rowNo: (index: number) => (current - 1) * pageSize + index + 1,
   };
 }
