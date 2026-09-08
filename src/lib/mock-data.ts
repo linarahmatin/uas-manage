@@ -320,14 +320,7 @@ export const statusSoalChart = [
   { name: "Revisi", value: 1, fill: "var(--color-chart-5)" },
 ];
 
-export const penggunaanRuang = [
-  { ruang: "Lab TI 1", sesi: 3, kapasitas: 30 },
-  { ruang: "Lab TI 2", sesi: 2, kapasitas: 30 },
-  { ruang: "Lab Jaringan", sesi: 1, kapasitas: 24 },
-  { ruang: "R. 201", sesi: 1, kapasitas: 40 },
-  { ruang: "R. 301", sesi: 1, kapasitas: 40 },
-  { ruang: "R. 401", sesi: 2, kapasitas: 48 },
-];
+export const penggunaanRuang = [{"ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "sesi": 12, "kapasitas": 24}, {"ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "sesi": 12, "kapasitas": 32}, {"ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "sesi": 12, "kapasitas": 32}, {"ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "sesi": 12, "kapasitas": 32}];
 
 export const notifikasi = [
   { judul: "3 soal UAS belum diinput", waktu: "5 menit lalu", tone: "danger" as const },
