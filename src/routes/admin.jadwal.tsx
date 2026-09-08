@@ -124,6 +124,7 @@ function JadwalPage() {
                   <Table>
                     <TableHeader>
                       <TableRow>
+                        <TableHead className="w-12 text-center">No</TableHead>
                         <TableHead>Tanggal</TableHead>
                         <TableHead>Hari</TableHead>
                         <TableHead>Jam</TableHead>
@@ -137,8 +138,9 @@ function JadwalPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {table.paged.map((row) => (
+                      {table.paged.map((row, i) => (
                         <TableRow key={row.id}>
+                          <TableCell className="text-center text-sm text-muted-foreground">{table.rowNo(i)}</TableCell>
                           <TableCell className="whitespace-nowrap text-sm">
                             {row.tanggal.split("-").reverse().join("/")}
                           </TableCell>

@@ -97,6 +97,7 @@ function MahasiswaPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-12 text-center">No</TableHead>
                     <TableHead>NIM</TableHead>
                     <TableHead>Nama Mahasiswa</TableHead>
                     <TableHead>Kelas</TableHead>
@@ -107,8 +108,9 @@ function MahasiswaPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {table.paged.map((row) => (
+                  {table.paged.map((row, i) => (
                     <TableRow key={row.nim}>
+                      <TableCell className="text-center text-sm text-muted-foreground">{table.rowNo(i)}</TableCell>
                       <TableCell className="font-mono text-xs">{row.nim}</TableCell>
                       <TableCell className="font-medium">{row.nama}</TableCell>
                       <TableCell>{row.kelas}</TableCell>
