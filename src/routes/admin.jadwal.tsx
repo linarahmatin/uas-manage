@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CalendarDays, Download, Pencil, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/app-shell";
@@ -25,6 +25,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -34,7 +41,8 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTable } from "@/hooks/use-table";
-import { jadwalList, type Jadwal } from "@/lib/mock-data";
+import type { Jadwal } from "@/lib/mock-data";
+import { jadwalStore, useCrud } from "@/lib/store";
 
 export const Route = createFileRoute("/admin/jadwal")({
   head: () => ({
@@ -53,23 +61,60 @@ export const Route = createFileRoute("/admin/jadwal")({
 
 const hariUrut = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
 
+const emptyForm: Jadwal = {
+  id: "",
+  tanggal: "",
+  hari: "",
+  jam: "",
+  mataKuliah: "",
+  kelas: "",
+  semester: 2,
+  ruang: "",
+  pengawas: "",
+  jenisUjian: "Tulis",
+  status: "Terjadwal",
+};
+
+function hariDari(tanggal: string) {
+  if (!tanggal) return "";
+  const d = new Date(`${tanggal}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return "";
+  return ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][d.getDay()]!;
+}
+
 function JadwalPage() {
+  const crud = useCrud<Jadwal>(jadwalStore, emptyForm);
   const table = useTable<Jadwal>(
-    jadwalList,
-    (row, q) =>
-      row.mataKuliah.toLowerCase().includes(q) ||
-      row.kelas.toLowerCase().includes(q) ||
-      row.ruang.toLowerCase().includes(q),
+    crud.rows,
+    useCallback(
+      (row: Jadwal, q: string) =>
+        row.mataKuliah.toLowerCase().includes(q) ||
+        row.kelas.toLowerCase().includes(q) ||
+        row.ruang.toLowerCase().includes(q),
+      [],
+    ),
     8,
   );
   const [kelas, setKelas] = useState("all");
-  const [formOpen, setFormOpen] = useState(false);
-  const [editing, setEditing] = useState<Jadwal | null>(null);
-  const [deleting, setDeleting] = useState<Jadwal | null>(null);
+  const kelasOptions = [...new Set(crud.rows.map((r) => r.kelas).filter(Boolean))].sort();
 
   const applyKelas = (v: string) => {
     setKelas(v);
     table.filter((row) => v === "all" || row.kelas === v);
+  };
+
+  const submit = () => {
+    if (!crud.form.tanggal || !crud.form.mataKuliah.trim()) {
+      toast.error("Tanggal dan mata kuliah wajib diisi.");
+      return;
+    }
+    const wasEditing = crud.save({
+      ...crud.form,
+      id: crud.form.id || jadwalStore.nextId("J"),
+      hari: hariDari(crud.form.tanggal),
+      semester: Number(crud.form.semester) || 2,
+    });
+    toast.success(wasEditing ? "Jadwal diperbarui." : "Jadwal ujian ditambahkan.");
   };
 
   return (
@@ -77,19 +122,21 @@ function JadwalPage() {
       role="admin"
       breadcrumb={["Beranda", "Ujian", "Jadwal UAS"]}
       title="Jadwal UAS"
-      description="Pekan UAS 24 - 28 Agustus 2026. Kelola sesi ujian per kelas dan ruang."
+      description="Kelola sesi ujian akhir semester per kelas dan ruang."
       actions={
         <>
-          <Button variant="outline" size="sm" onClick={() => toast.success("Jadwal diexport ke Excel.")}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              crud.rows.length === 0
+                ? toast.error("Belum ada jadwal yang bisa diexport.")
+                : toast.success("Jadwal diexport ke Excel.")
+            }
+          >
             <Download className="mr-2 size-4" /> Export Jadwal
           </Button>
-          <Button
-            size="sm"
-            onClick={() => {
-              setEditing(null);
-              setFormOpen(true);
-            }}
-          >
+          <Button size="sm" onClick={crud.openCreate}>
             <Plus className="mr-2 size-4" /> Tambah Jadwal
           </Button>
         </>
@@ -107,18 +154,20 @@ function JadwalPage() {
               <div className="flex flex-col gap-3 border-b p-4 sm:flex-row sm:items-center">
                 <SearchInput value={table.query} onChange={table.search} placeholder="Cari mata kuliah / ruang..." />
                 <div className="flex flex-col gap-3 sm:ml-auto sm:flex-row">
-                  <Input type="date" className="w-full sm:w-40" aria-label="Filter tanggal" />
-                  <FilterSelect
-                    label="Kelas"
-                    value={kelas}
-                    onChange={applyKelas}
-                    options={["TI-2A", "TI-2B", "TI-4A", "TI-4B", "TI-6A", "TI-6B", "TI-8A", "TI-8B"]}
-                  />
+                  <FilterSelect label="Kelas" value={kelas} onChange={applyKelas} options={kelasOptions} />
                 </div>
               </div>
 
               {table.paged.length === 0 ? (
-                <EmptyState />
+                <EmptyState
+                  title="Belum ada jadwal UAS"
+                  description="Tambahkan sesi ujian melalui tombol Tambah Jadwal."
+                  action={
+                    <Button size="sm" onClick={crud.openCreate}>
+                      <Plus className="mr-2 size-4" /> Tambah Jadwal
+                    </Button>
+                  }
+                />
               ) : (
                 <div className="overflow-x-auto">
                   <Table>
@@ -156,15 +205,7 @@ function JadwalPage() {
                           </TableCell>
                           <TableCell>
                             <div className="flex justify-end gap-1">
-                              <Button
-                                size="icon"
-                                variant="ghost"
-                                aria-label="Edit"
-                                onClick={() => {
-                                  setEditing(row);
-                                  setFormOpen(true);
-                                }}
-                              >
+                              <Button size="icon" variant="ghost" aria-label="Edit" onClick={() => crud.openEdit(row)}>
                                 <Pencil className="size-4" />
                               </Button>
                               <Button
@@ -172,7 +213,7 @@ function JadwalPage() {
                                 variant="ghost"
                                 aria-label="Hapus"
                                 className="text-destructive"
-                                onClick={() => setDeleting(row)}
+                                onClick={() => crud.setDeleting(row)}
                               >
                                 <Trash2 className="size-4" />
                               </Button>
@@ -193,7 +234,7 @@ function JadwalPage() {
         <TabsContent value="kalender" className="mt-4">
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
             {hariUrut.map((hari) => {
-              const sesi = jadwalList.filter((j) => j.hari === hari && j.status !== "Dibatalkan");
+              const sesi = crud.rows.filter((j) => j.hari === hari && j.status !== "Dibatalkan");
               return (
                 <Card key={hari} className="shadow-card">
                   <CardHeader className="pb-3">
@@ -223,61 +264,106 @@ function JadwalPage() {
         </TabsContent>
       </Tabs>
 
-      <Dialog open={formOpen} onOpenChange={setFormOpen}>
+      <Dialog open={crud.open} onOpenChange={crud.setOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{editing ? "Edit Jadwal UAS" : "Tambah Jadwal UAS"}</DialogTitle>
+            <DialogTitle>{crud.isEditing ? "Edit Jadwal UAS" : "Tambah Jadwal UAS"}</DialogTitle>
             <DialogDescription>Pastikan ruang dan pengawas tidak bertabrakan jadwal.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Tanggal</Label>
-              <Input type="date" defaultValue={editing?.tanggal ?? "2026-08-24"} />
+              <Input type="date" value={crud.form.tanggal} onChange={(e) => crud.set("tanggal", e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label>Jam</Label>
-              <Input defaultValue={editing?.jam} placeholder="08.00 - 09.40" />
+              <Input
+                value={crud.form.jam}
+                onChange={(e) => crud.set("jam", e.target.value)}
+                placeholder="09.15 - 10.15"
+              />
             </div>
             <div className="space-y-2">
               <Label>Mata Kuliah</Label>
-              <Input defaultValue={editing?.mataKuliah} placeholder="Basis Data" />
+              <Input
+                value={crud.form.mataKuliah}
+                onChange={(e) => crud.set("mataKuliah", e.target.value)}
+                placeholder="Basis Data"
+              />
             </div>
             <div className="space-y-2">
               <Label>Kelas</Label>
-              <Input defaultValue={editing?.kelas} placeholder="TI-4A" />
+              <Input value={crud.form.kelas} onChange={(e) => crud.set("kelas", e.target.value)} placeholder="TI1A" />
+            </div>
+            <div className="space-y-2">
+              <Label>Semester</Label>
+              <Input
+                type="number"
+                min={1}
+                value={crud.form.semester}
+                onChange={(e) => crud.set("semester", Number(e.target.value))}
+              />
             </div>
             <div className="space-y-2">
               <Label>Ruang</Label>
-              <Input defaultValue={editing?.ruang} placeholder="Lab TI 1" />
+              <Input
+                value={crud.form.ruang}
+                onChange={(e) => crud.set("ruang", e.target.value)}
+                placeholder="Ruang Teori - 2"
+              />
             </div>
             <div className="space-y-2">
               <Label>Dosen Pengawas</Label>
-              <Input defaultValue={editing?.pengawas} placeholder="Nama pengawas" />
+              <Input
+                value={crud.form.pengawas}
+                onChange={(e) => crud.set("pengawas", e.target.value)}
+                placeholder="Nama pengawas"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Jenis Ujian</Label>
+              <Select value={crud.form.jenisUjian} onValueChange={(v) => crud.set("jenisUjian", v)}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Tulis">Tulis</SelectItem>
+                  <SelectItem value="Praktikum">Praktikum</SelectItem>
+                  <SelectItem value="Online">Online</SelectItem>
+                  <SelectItem value="Take Home">Take Home</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2 sm:col-span-2">
+              <Label>Status</Label>
+              <Select value={crud.form.status} onValueChange={(v) => crud.set("status", v as Jadwal["status"])}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Terjadwal">Terjadwal</SelectItem>
+                  <SelectItem value="Selesai">Selesai</SelectItem>
+                  <SelectItem value="Dibatalkan">Dibatalkan</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setFormOpen(false)}>
+            <Button variant="outline" onClick={() => crud.setOpen(false)}>
               Batal
             </Button>
-            <Button
-              onClick={() => {
-                setFormOpen(false);
-                toast.success(editing ? "Jadwal diperbarui." : "Jadwal ujian ditambahkan.");
-              }}
-            >
-              Simpan Jadwal
-            </Button>
+            <Button onClick={submit}>Simpan Jadwal</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <ConfirmDeleteDialog
-        open={!!deleting}
-        onOpenChange={(v) => !v && setDeleting(null)}
-        itemName={deleting?.mataKuliah}
+        open={!!crud.deleting}
+        onOpenChange={(v) => !v && crud.setDeleting(null)}
+        itemName={crud.deleting?.mataKuliah}
         onConfirm={() => {
+          crud.confirmDelete();
           toast.success("Jadwal dihapus.");
-          setDeleting(null);
         }}
       />
     </AppShell>

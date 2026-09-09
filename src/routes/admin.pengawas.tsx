@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Pencil, Trash2, UserPlus } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/app-shell";
@@ -40,7 +40,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useTable } from "@/hooks/use-table";
-import { dosenList, pengawasList, ruangList, type Pengawas } from "@/lib/mock-data";
+import type { Pengawas } from "@/lib/mock-data";
+import { pengawasStore, useCrud } from "@/lib/store";
 
 export const Route = createFileRoute("/admin/pengawas")({
   head: () => ({
@@ -57,22 +58,46 @@ export const Route = createFileRoute("/admin/pengawas")({
   component: PengawasPage,
 });
 
+const emptyForm: Pengawas = {
+  id: "",
+  nama: "",
+  tanggal: "",
+  jam: "",
+  ruang: "",
+  mataKuliah: "",
+  kelas: "",
+  status: "Ditugaskan",
+};
+
 function PengawasPage() {
+  const crud = useCrud<Pengawas>(pengawasStore, emptyForm);
   const table = useTable<Pengawas>(
-    pengawasList,
-    (row, q) =>
-      row.nama.toLowerCase().includes(q) ||
-      row.mataKuliah.toLowerCase().includes(q) ||
-      row.ruang.toLowerCase().includes(q),
+    crud.rows,
+    useCallback(
+      (row: Pengawas, q: string) =>
+        row.nama.toLowerCase().includes(q) ||
+        row.mataKuliah.toLowerCase().includes(q) ||
+        row.ruang.toLowerCase().includes(q),
+      [],
+    ),
   );
   const [status, setStatus] = useState("all");
-  const [assignOpen, setAssignOpen] = useState(false);
-  const [editing, setEditing] = useState<Pengawas | null>(null);
-  const [deleting, setDeleting] = useState<Pengawas | null>(null);
 
   const applyStatus = (v: string) => {
     setStatus(v);
     table.filter((row) => v === "all" || row.status === v);
+  };
+
+  const submit = () => {
+    if (!crud.form.nama.trim() || !crud.form.tanggal) {
+      toast.error("Nama dosen dan tanggal wajib diisi.");
+      return;
+    }
+    const wasEditing = crud.save({
+      ...crud.form,
+      id: crud.form.id || pengawasStore.nextId("P"),
+    });
+    toast.success(wasEditing ? "Penugasan diperbarui." : "Pengawas berhasil ditugaskan.");
   };
 
   return (
@@ -82,13 +107,7 @@ function PengawasPage() {
       title="Dosen Pengawas"
       description="Penugasan pengawas untuk setiap sesi ujian akhir semester."
       actions={
-        <Button
-          size="sm"
-          onClick={() => {
-            setEditing(null);
-            setAssignOpen(true);
-          }}
-        >
+        <Button size="sm" onClick={crud.openCreate}>
           <UserPlus className="mr-2 size-4" /> Assign Pengawas
         </Button>
       }
@@ -98,7 +117,6 @@ function PengawasPage() {
           <div className="flex flex-col gap-3 border-b p-4 sm:flex-row sm:items-center">
             <SearchInput value={table.query} onChange={table.search} placeholder="Cari dosen, ruang, mata kuliah..." />
             <div className="flex flex-col gap-3 sm:ml-auto sm:flex-row">
-              <Input type="date" className="w-full sm:w-40" aria-label="Filter tanggal" />
               <FilterSelect
                 label="Status"
                 value={status}
@@ -109,7 +127,15 @@ function PengawasPage() {
           </div>
 
           {table.paged.length === 0 ? (
-            <EmptyState />
+            <EmptyState
+              title="Belum ada penugasan pengawas"
+              description="Tugaskan dosen pengawas melalui tombol Assign Pengawas."
+              action={
+                <Button size="sm" onClick={crud.openCreate}>
+                  <UserPlus className="mr-2 size-4" /> Assign Pengawas
+                </Button>
+              }
+            />
           ) : (
             <div className="overflow-x-auto">
               <Table>
@@ -141,15 +167,7 @@ function PengawasPage() {
                       </TableCell>
                       <TableCell>
                         <div className="flex justify-end gap-1">
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            aria-label="Edit"
-                            onClick={() => {
-                              setEditing(row);
-                              setAssignOpen(true);
-                            }}
-                          >
+                          <Button size="icon" variant="ghost" aria-label="Edit" onClick={() => crud.openEdit(row)}>
                             <Pencil className="size-4" />
                           </Button>
                           <Button
@@ -157,7 +175,7 @@ function PengawasPage() {
                             variant="ghost"
                             aria-label="Hapus"
                             className="text-destructive"
-                            onClick={() => setDeleting(row)}
+                            onClick={() => crud.setDeleting(row)}
                           >
                             <Trash2 className="size-4" />
                           </Button>
@@ -174,79 +192,83 @@ function PengawasPage() {
         </CardContent>
       </Card>
 
-      <Dialog open={assignOpen} onOpenChange={setAssignOpen}>
+      <Dialog open={crud.open} onOpenChange={crud.setOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{editing ? "Edit Penugasan" : "Assign Dosen Pengawas"}</DialogTitle>
+            <DialogTitle>{crud.isEditing ? "Edit Penugasan" : "Assign Dosen Pengawas"}</DialogTitle>
             <DialogDescription>Satu dosen tidak boleh mengawas dua ruang pada jam yang sama.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2 sm:col-span-2">
-              <Label>Dosen</Label>
-              <Select defaultValue={editing?.nama ?? dosenList[0]!.nama}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {dosenList.map((d) => (
-                    <SelectItem key={d.nip} value={d.nama}>
-                      {d.nama}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label>Nama Dosen</Label>
+              <Input
+                value={crud.form.nama}
+                onChange={(e) => crud.set("nama", e.target.value)}
+                placeholder="Nama dosen pengawas"
+              />
             </div>
             <div className="space-y-2">
               <Label>Tanggal</Label>
-              <Input type="date" defaultValue="2026-08-24" />
+              <Input type="date" value={crud.form.tanggal} onChange={(e) => crud.set("tanggal", e.target.value)} />
             </div>
             <div className="space-y-2">
               <Label>Jam</Label>
-              <Input defaultValue={editing?.jam} placeholder="08.00 - 09.40" />
+              <Input
+                value={crud.form.jam}
+                onChange={(e) => crud.set("jam", e.target.value)}
+                placeholder="09.15 - 10.15"
+              />
             </div>
             <div className="space-y-2">
               <Label>Ruang</Label>
-              <Select defaultValue={editing?.ruang ?? ruangList[0]!.nama}>
+              <Input
+                value={crud.form.ruang}
+                onChange={(e) => crud.set("ruang", e.target.value)}
+                placeholder="Ruang Teori - 2"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Mata Kuliah</Label>
+              <Input
+                value={crud.form.mataKuliah}
+                onChange={(e) => crud.set("mataKuliah", e.target.value)}
+                placeholder="Basis Data"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Kelas</Label>
+              <Input value={crud.form.kelas} onChange={(e) => crud.set("kelas", e.target.value)} placeholder="TI1A" />
+            </div>
+            <div className="space-y-2">
+              <Label>Status</Label>
+              <Select value={crud.form.status} onValueChange={(v) => crud.set("status", v as Pengawas["status"])}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {ruangList.map((r) => (
-                    <SelectItem key={r.nama} value={r.nama}>
-                      {r.nama}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="Ditugaskan">Ditugaskan</SelectItem>
+                  <SelectItem value="Menunggu">Menunggu</SelectItem>
+                  <SelectItem value="Dibatalkan">Dibatalkan</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label>Kelas</Label>
-              <Input defaultValue={editing?.kelas} placeholder="TI-6A" />
-            </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setAssignOpen(false)}>
+            <Button variant="outline" onClick={() => crud.setOpen(false)}>
               Batal
             </Button>
-            <Button
-              onClick={() => {
-                setAssignOpen(false);
-                toast.success(editing ? "Penugasan diperbarui." : "Pengawas berhasil ditugaskan.");
-              }}
-            >
-              Simpan Penugasan
-            </Button>
+            <Button onClick={submit}>Simpan Penugasan</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <ConfirmDeleteDialog
-        open={!!deleting}
-        onOpenChange={(v) => !v && setDeleting(null)}
-        itemName={deleting?.nama}
+        open={!!crud.deleting}
+        onOpenChange={(v) => !v && crud.setDeleting(null)}
+        itemName={crud.deleting?.nama}
         onConfirm={() => {
+          crud.confirmDelete();
           toast.success("Penugasan dihapus.");
-          setDeleting(null);
         }}
       />
     </AppShell>

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/app-shell";
@@ -25,6 +25,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -33,7 +40,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useTable } from "@/hooks/use-table";
-import { mahasiswaList, type Mahasiswa } from "@/lib/mock-data";
+import type { Mahasiswa } from "@/lib/mock-data";
+import { mahasiswaStore, useCrud } from "@/lib/store";
 
 export const Route = createFileRoute("/admin/mahasiswa")({
   head: () => ({
@@ -50,18 +58,40 @@ export const Route = createFileRoute("/admin/mahasiswa")({
   component: MahasiswaPage,
 });
 
+const emptyForm: Mahasiswa = {
+  nim: "",
+  nama: "",
+  kelas: "",
+  semester: 2,
+  email: "",
+  status: "Aktif",
+};
+
 function MahasiswaPage() {
+  const crud = useCrud<Mahasiswa>(mahasiswaStore, emptyForm);
   const table = useTable<Mahasiswa>(
-    mahasiswaList,
-    (row, q) => row.nama.toLowerCase().includes(q) || row.nim.includes(q) || row.kelas.toLowerCase().includes(q),
+    crud.rows,
+    useCallback(
+      (row: Mahasiswa, q: string) =>
+        row.nama.toLowerCase().includes(q) || row.nim.includes(q) || row.kelas.toLowerCase().includes(q),
+      [],
+    ),
   );
   const [kelas, setKelas] = useState("all");
-  const [formOpen, setFormOpen] = useState(false);
-  const [deleting, setDeleting] = useState<Mahasiswa | null>(null);
+  const kelasOptions = [...new Set(crud.rows.map((r) => r.kelas).filter(Boolean))].sort();
 
   const applyKelas = (v: string) => {
     setKelas(v);
     table.filter((row) => v === "all" || row.kelas === v);
+  };
+
+  const submit = () => {
+    if (!crud.form.nim.trim() || !crud.form.nama.trim()) {
+      toast.error("NIM dan nama wajib diisi.");
+      return;
+    }
+    const wasEditing = crud.save({ ...crud.form, semester: Number(crud.form.semester) || 2 });
+    toast.success(wasEditing ? "Data mahasiswa diperbarui." : "Mahasiswa berhasil ditambahkan.");
   };
 
   return (
@@ -71,7 +101,7 @@ function MahasiswaPage() {
       title="Data Mahasiswa"
       description="Peserta ujian akhir semester per kelas dan semester."
       actions={
-        <Button size="sm" onClick={() => setFormOpen(true)}>
+        <Button size="sm" onClick={crud.openCreate}>
           <Plus className="mr-2 size-4" /> Tambah Mahasiswa
         </Button>
       }
@@ -81,17 +111,20 @@ function MahasiswaPage() {
           <div className="flex flex-col gap-3 border-b p-4 sm:flex-row sm:items-center">
             <SearchInput value={table.query} onChange={table.search} placeholder="Cari NIM atau nama..." />
             <div className="sm:ml-auto">
-              <FilterSelect
-                label="Kelas"
-                value={kelas}
-                onChange={applyKelas}
-                options={["TI-2A", "TI-4A", "TI-4B", "TI-6A", "TI-6B", "TI-8A", "TI-8B"]}
-              />
+              <FilterSelect label="Kelas" value={kelas} onChange={applyKelas} options={kelasOptions} />
             </div>
           </div>
 
           {table.paged.length === 0 ? (
-            <EmptyState />
+            <EmptyState
+              title="Belum ada data mahasiswa"
+              description="Tambahkan mahasiswa peserta UAS melalui tombol Tambah Mahasiswa."
+              action={
+                <Button size="sm" onClick={crud.openCreate}>
+                  <Plus className="mr-2 size-4" /> Tambah Mahasiswa
+                </Button>
+              }
+            />
           ) : (
             <div className="overflow-x-auto">
               <Table>
@@ -121,7 +154,7 @@ function MahasiswaPage() {
                       </TableCell>
                       <TableCell>
                         <div className="flex justify-end gap-1">
-                          <Button size="icon" variant="ghost" aria-label="Edit" onClick={() => setFormOpen(true)}>
+                          <Button size="icon" variant="ghost" aria-label="Edit" onClick={() => crud.openEdit(row)}>
                             <Pencil className="size-4" />
                           </Button>
                           <Button
@@ -129,7 +162,7 @@ function MahasiswaPage() {
                             variant="ghost"
                             aria-label="Hapus"
                             className="text-destructive"
-                            onClick={() => setDeleting(row)}
+                            onClick={() => crud.setDeleting(row)}
                           >
                             <Trash2 className="size-4" />
                           </Button>
@@ -146,57 +179,83 @@ function MahasiswaPage() {
         </CardContent>
       </Card>
 
-      <Dialog open={formOpen} onOpenChange={setFormOpen}>
+      <Dialog open={crud.open} onOpenChange={crud.setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Form Mahasiswa</DialogTitle>
+            <DialogTitle>{crud.isEditing ? "Edit Mahasiswa" : "Tambah Mahasiswa"}</DialogTitle>
             <DialogDescription>Data peserta ujian akhir semester.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>NIM</Label>
-              <Input placeholder="2211081001" />
+              <Input
+                value={crud.form.nim}
+                onChange={(e) => crud.set("nim", e.target.value)}
+                placeholder="2211081001"
+              />
             </div>
             <div className="space-y-2">
               <Label>Nama</Label>
-              <Input placeholder="Nama mahasiswa" />
+              <Input
+                value={crud.form.nama}
+                onChange={(e) => crud.set("nama", e.target.value)}
+                placeholder="Nama mahasiswa"
+              />
             </div>
             <div className="space-y-2">
               <Label>Kelas</Label>
-              <Input placeholder="TI-6A" />
+              <Input value={crud.form.kelas} onChange={(e) => crud.set("kelas", e.target.value)} placeholder="TI1A" />
             </div>
             <div className="space-y-2">
               <Label>Semester</Label>
-              <Input placeholder="6" />
+              <Input
+                type="number"
+                min={1}
+                value={crud.form.semester}
+                onChange={(e) => crud.set("semester", Number(e.target.value))}
+              />
             </div>
             <div className="space-y-2 sm:col-span-2">
               <Label>Email</Label>
-              <Input placeholder="nama@student.ti.ac.id" />
+              <Input
+                value={crud.form.email}
+                onChange={(e) => crud.set("email", e.target.value)}
+                placeholder="nama@student.polinema.ac.id"
+              />
+            </div>
+            <div className="space-y-2 sm:col-span-2">
+              <Label>Status</Label>
+              <Select
+                value={crud.form.status}
+                onValueChange={(v) => crud.set("status", v as Mahasiswa["status"])}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Aktif">Aktif</SelectItem>
+                  <SelectItem value="Tidak Aktif">Tidak Aktif</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setFormOpen(false)}>
+            <Button variant="outline" onClick={() => crud.setOpen(false)}>
               Batal
             </Button>
-            <Button
-              onClick={() => {
-                setFormOpen(false);
-                toast.success("Data mahasiswa disimpan.");
-              }}
-            >
-              Simpan
-            </Button>
+            <Button onClick={submit}>Simpan</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <ConfirmDeleteDialog
-        open={!!deleting}
-        onOpenChange={(v) => !v && setDeleting(null)}
-        itemName={deleting?.nama}
+        open={!!crud.deleting}
+        onOpenChange={(v) => !v && crud.setDeleting(null)}
+        itemName={crud.deleting?.nama}
         onConfirm={() => {
-          toast.success(`${deleting?.nama} dihapus.`);
-          setDeleting(null);
+          const nama = crud.deleting?.nama;
+          crud.confirmDelete();
+          toast.success(`${nama} dihapus.`);
         }}
       />
     </AppShell>
