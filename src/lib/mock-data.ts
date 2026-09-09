@@ -92,32 +92,7 @@ export type Mahasiswa = {
   status: "Aktif" | "Tidak Aktif";
 };
 
-export const mahasiswaList: Mahasiswa[] = [
-  {"nim": "234100001", "nama": "Aditya Pratama", "kelas": "TI1A", "semester": 2, "email": "aditya.pratama@student.polinema.ac.id", "status": "Tidak Aktif"},
-  {"nim": "234100002", "nama": "Bunga Lestari", "kelas": "TI1B", "semester": 2, "email": "bunga.lestari@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100003", "nama": "Citra Amelia", "kelas": "TI1C", "semester": 2, "email": "citra.amelia@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100004", "nama": "Dimas Saputra", "kelas": "SIB1A", "semester": 2, "email": "dimas.saputra@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100005", "nama": "Eka Nurhaliza", "kelas": "SIB1B", "semester": 2, "email": "eka.nurhaliza@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100006", "nama": "Fajar Ramadhan", "kelas": "TI2A", "semester": 4, "email": "fajar.ramadhan@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100007", "nama": "Gita Purnama", "kelas": "TI2B", "semester": 4, "email": "gita.purnama@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100008", "nama": "Hafiz Alfarizi", "kelas": "SIB2A", "semester": 4, "email": "hafiz.alfarizi@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100009", "nama": "Intan Maharani", "kelas": "TI3A", "semester": 6, "email": "intan.maharani@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100010", "nama": "Joko Nugroho", "kelas": "TI3B", "semester": 6, "email": "joko.nugroho@student.polinema.ac.id", "status": "Tidak Aktif"},
-  {"nim": "234100011", "nama": "Kirana Ayu", "kelas": "SIB3A", "semester": 6, "email": "kirana.ayu@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100012", "nama": "Lukman Hakim", "kelas": "TI4A", "semester": 8, "email": "lukman.hakim@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100013", "nama": "Mira Andini", "kelas": "TI4B", "semester": 8, "email": "mira.andini@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100014", "nama": "Naufal Rizky", "kelas": "SIB4A", "semester": 8, "email": "naufal.rizky@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100015", "nama": "Oktavia Sari", "kelas": "TI1A", "semester": 2, "email": "oktavia.sari@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100016", "nama": "Putra Wijaya", "kelas": "TI1B", "semester": 2, "email": "putra.wijaya@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100017", "nama": "Qori Amelia", "kelas": "TI1C", "semester": 2, "email": "qori.amelia@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100018", "nama": "Rian Setiawan", "kelas": "SIB1A", "semester": 2, "email": "rian.setiawan@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100019", "nama": "Salsabila Putri", "kelas": "SIB1B", "semester": 2, "email": "salsabila.putri@student.polinema.ac.id", "status": "Tidak Aktif"},
-  {"nim": "234100020", "nama": "Taufik Hidayat", "kelas": "TI2A", "semester": 4, "email": "taufik.hidayat@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100021", "nama": "Umi Kalsum", "kelas": "TI2B", "semester": 4, "email": "umi.kalsum@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100022", "nama": "Vino Prasetyo", "kelas": "SIB2A", "semester": 4, "email": "vino.prasetyo@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100023", "nama": "Wulan Sari", "kelas": "TI3A", "semester": 6, "email": "wulan.sari@student.polinema.ac.id", "status": "Aktif"},
-  {"nim": "234100024", "nama": "Yoga Pratama", "kelas": "TI3B", "semester": 6, "email": "yoga.pratama@student.polinema.ac.id", "status": "Aktif"},
-];
+export const mahasiswaList: Mahasiswa[] = [];
 
 export type Soal = {
   id: string;
@@ -158,56 +133,7 @@ export type Jadwal = {
   status: "Terjadwal" | "Selesai" | "Dibatalkan";
 };
 
-export const jadwalList: Jadwal[] = [
-  {"id": "J-01", "tanggal": "2026-06-15", "hari": "Senin", "jam": "09.15 - 10.15", "mataKuliah": "Analisis Proses Bisnis", "kelas": "SIB1A", "semester": 2, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Mamluatul Hani'ah, S.Kom., M.Kom.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-02", "tanggal": "2026-06-15", "hari": "Senin", "jam": "10.30 - 11.30", "mataKuliah": "Kewarganegaraan", "kelas": "SIB1A", "semester": 2, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Mamluatul Hani'ah, S.Kom., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-03", "tanggal": "2026-06-15", "hari": "Senin", "jam": "11.45 - 12.45", "mataKuliah": "Aljabar Linier", "kelas": "TI1A", "semester": 2, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Mamluatul Hani'ah, S.Kom., M.Kom.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-04", "tanggal": "2026-06-15", "hari": "Senin", "jam": "13.00 - 14.00", "mataKuliah": "Rekayasa Perangkat Lunak", "kelas": "TI1A", "semester": 2, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Mamluatul Hani'ah, S.Kom., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-05", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "09.15 - 10.15", "mataKuliah": "Agama", "kelas": "TI1A", "semester": 2, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Dr. Yuri Ariyanto, S.Kom., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-06", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "10.30 - 11.30", "mataKuliah": "Desain Antarmuka", "kelas": "TI1A", "semester": 2, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Dr. Yuri Ariyanto, S.Kom., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-07", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "11.45 - 12.45", "mataKuliah": "Pengenalan Sistem Informasi", "kelas": "SIB1A", "semester": 2, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Titis Octary Satrio, S.ST., M.MT.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-08", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "13.00 - 14.00", "mataKuliah": "Matematika Lanjut", "kelas": "SIB1A", "semester": 2, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Titis Octary Satrio, S.ST., M.MT.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-09", "tanggal": "2026-06-18", "hari": "Kamis", "jam": "09.15 - 10.15", "mataKuliah": "Algoritma dan Struktur Data", "kelas": "SIB1A", "semester": 2, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Dr. Yuri Ariyanto, S.Kom., M.Kom.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-10", "tanggal": "2026-06-18", "hari": "Kamis", "jam": "10.30 - 11.30", "mataKuliah": "Basis Data", "kelas": "SIB1A", "semester": 2, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Dr. Yuri Ariyanto, S.Kom., M.Kom.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-11", "tanggal": "2026-06-19", "hari": "Jumat", "jam": "09.15 - 10.15", "mataKuliah": "Pengembangan Karir", "kelas": "TI3A", "semester": 6, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Vivi Nur Wijayaningrum, S.Kom., M.Kom.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-12", "tanggal": "2026-06-19", "hari": "Jumat", "jam": "10.30 - 11.30", "mataKuliah": "Komputasi Hijau", "kelas": "TI3A", "semester": 6, "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "pengawas": "Vivi Nur Wijayaningrum, S.Kom., M.Kom.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-13", "tanggal": "2026-06-15", "hari": "Senin", "jam": "09.15 - 10.15", "mataKuliah": "Analisis Proses Bisnis", "kelas": "SIB1B", "semester": 2, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Ariadi Retno Tri Hayati Ririd, S.Kom., M.Kom.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-14", "tanggal": "2026-06-15", "hari": "Senin", "jam": "10.30 - 11.30", "mataKuliah": "Kewarganegaraan", "kelas": "SIB1B", "semester": 2, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Ariadi Retno Tri Hayati Ririd, S.Kom., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-15", "tanggal": "2026-06-15", "hari": "Senin", "jam": "11.45 - 12.45", "mataKuliah": "Aljabar Linier", "kelas": "TI1B", "semester": 2, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Habibie Ed Dien, S.Kom., M.T.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-16", "tanggal": "2026-06-15", "hari": "Senin", "jam": "13.00 - 14.00", "mataKuliah": "Rekayasa Perangkat Lunak", "kelas": "TI1B", "semester": 2, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Habibie Ed Dien, S.Kom., M.T.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-17", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "09.15 - 10.15", "mataKuliah": "Agama", "kelas": "TI1B", "semester": 2, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Wilda Imama Sabilla, S.Kom., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-18", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "10.30 - 11.30", "mataKuliah": "Desain Antarmuka", "kelas": "TI1B", "semester": 2, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Wilda Imama Sabilla, S.Kom., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-19", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "11.45 - 12.45", "mataKuliah": "Pengenalan Sistem Informasi", "kelas": "SIB1B", "semester": 2, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Usman Nurhasan, S.Kom., M.T.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-20", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "13.00 - 14.00", "mataKuliah": "Matematika Lanjut", "kelas": "SIB1B", "semester": 2, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Usman Nurhasan, S.Kom., M.T.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-21", "tanggal": "2026-06-18", "hari": "Kamis", "jam": "09.15 - 10.15", "mataKuliah": "Algoritma dan Struktur Data", "kelas": "SIB1B", "semester": 2, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Triana Fatmawati, S.T., M.T.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-22", "tanggal": "2026-06-18", "hari": "Kamis", "jam": "10.30 - 11.30", "mataKuliah": "Basis Data", "kelas": "SIB1B", "semester": 2, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Triana Fatmawati, S.T., M.T.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-23", "tanggal": "2026-06-19", "hari": "Jumat", "jam": "09.15 - 10.15", "mataKuliah": "Pengembangan Karir", "kelas": "TI3B", "semester": 6, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Rokhimatul Wakhidah, S.Pd., M.T.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-24", "tanggal": "2026-06-19", "hari": "Jumat", "jam": "10.30 - 11.30", "mataKuliah": "Komputasi Hijau", "kelas": "TI3B", "semester": 6, "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "pengawas": "Rokhimatul Wakhidah, S.Pd., M.T.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-25", "tanggal": "2026-06-15", "hari": "Senin", "jam": "09.15 - 10.15", "mataKuliah": "Analisis Proses Bisnis", "kelas": "SIB1C", "semester": 2, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Dian Hanifudin Subhi, S.Kom., M.Kom.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-26", "tanggal": "2026-06-15", "hari": "Senin", "jam": "10.30 - 11.30", "mataKuliah": "Kewarganegaraan", "kelas": "SIB1C", "semester": 2, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Dian Hanifudin Subhi, S.Kom., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-27", "tanggal": "2026-06-15", "hari": "Senin", "jam": "11.45 - 12.45", "mataKuliah": "Aljabar Linier", "kelas": "TI1C", "semester": 2, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Dian Hanifudin Subhi, S.Kom., M.Kom.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-28", "tanggal": "2026-06-15", "hari": "Senin", "jam": "13.00 - 14.00", "mataKuliah": "Rekayasa Perangkat Lunak", "kelas": "TI1C", "semester": 2, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Dian Hanifudin Subhi, S.Kom., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-29", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "09.15 - 10.15", "mataKuliah": "Agama", "kelas": "TI1C", "semester": 2, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Habibie Ed Dien, S.Kom., M.T.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-30", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "10.30 - 11.30", "mataKuliah": "Desain Antarmuka", "kelas": "TI1C", "semester": 2, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Habibie Ed Dien, S.Kom., M.T.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-31", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "11.45 - 12.45", "mataKuliah": "Pengenalan Sistem Informasi", "kelas": "SIB1C", "semester": 2, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Habibie Ed Dien, S.Kom., M.T.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-32", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "13.00 - 14.00", "mataKuliah": "Matematika Lanjut", "kelas": "SIB1C", "semester": 2, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Habibie Ed Dien, S.Kom., M.T.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-33", "tanggal": "2026-06-18", "hari": "Kamis", "jam": "09.15 - 10.15", "mataKuliah": "Algoritma dan Struktur Data", "kelas": "SIB1C", "semester": 2, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Candra Bella Vista, S.Kom, M.T.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-34", "tanggal": "2026-06-18", "hari": "Kamis", "jam": "10.30 - 11.30", "mataKuliah": "Basis Data", "kelas": "SIB1C", "semester": 2, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Candra Bella Vista, S.Kom, M.T.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-35", "tanggal": "2026-06-19", "hari": "Jumat", "jam": "09.15 - 10.15", "mataKuliah": "Pengembangan Karir", "kelas": "TI3C", "semester": 6, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Dr. Ulla Delfana Rosiani, S.T., M.T.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-36", "tanggal": "2026-06-19", "hari": "Jumat", "jam": "10.30 - 11.30", "mataKuliah": "Komputasi Hijau", "kelas": "TI3C", "semester": 6, "ruang": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "pengawas": "Dr. Ulla Delfana Rosiani, S.T., M.T.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-37", "tanggal": "2026-06-15", "hari": "Senin", "jam": "09.15 - 10.15", "mataKuliah": "Analisis Proses Bisnis", "kelas": "SIB1D", "semester": 2, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "Rudy Ariyanto, S.T., M.Cs.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-38", "tanggal": "2026-06-15", "hari": "Senin", "jam": "10.30 - 11.30", "mataKuliah": "Kewarganegaraan", "kelas": "SIB1D", "semester": 2, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "Rudy Ariyanto, S.T., M.Cs.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-39", "tanggal": "2026-06-15", "hari": "Senin", "jam": "11.45 - 12.45", "mataKuliah": "Aljabar Linier", "kelas": "TI1D", "semester": 2, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "Ahmadi Yuli Ananta, S.T., M.M.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-40", "tanggal": "2026-06-15", "hari": "Senin", "jam": "13.00 - 14.00", "mataKuliah": "Rekayasa Perangkat Lunak", "kelas": "TI1D", "semester": 2, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "Ahmadi Yuli Ananta, S.T., M.M.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-41", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "09.15 - 10.15", "mataKuliah": "Agama", "kelas": "TI1D", "semester": 2, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "M. Hasyim Ratsanjani, S.Kom., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-42", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "10.30 - 11.30", "mataKuliah": "Desain Antarmuka", "kelas": "TI1D", "semester": 2, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "M. Hasyim Ratsanjani, S.Kom., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-43", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "11.45 - 12.45", "mataKuliah": "Pengenalan Sistem Informasi", "kelas": "SIB1D", "semester": 2, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "Moch. Zawaruddin Abdullah, S.ST., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-44", "tanggal": "2026-06-17", "hari": "Rabu", "jam": "13.00 - 14.00", "mataKuliah": "Matematika Lanjut", "kelas": "SIB1D", "semester": 2, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "Moch. Zawaruddin Abdullah, S.ST., M.Kom.", "jenisUjian": "Tulis", "status": "Terjadwal"},
-  {"id": "J-45", "tanggal": "2026-06-18", "hari": "Kamis", "jam": "09.15 - 10.15", "mataKuliah": "Algoritma dan Struktur Data", "kelas": "SIB1D", "semester": 2, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "Farida Ulfa, S.Pd., M.Pd.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-46", "tanggal": "2026-06-18", "hari": "Kamis", "jam": "10.30 - 11.30", "mataKuliah": "Basis Data", "kelas": "SIB1D", "semester": 2, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "Farida Ulfa, S.Pd., M.Pd.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-47", "tanggal": "2026-06-19", "hari": "Jumat", "jam": "09.15 - 10.15", "mataKuliah": "Pengembangan Karir", "kelas": "TI3D", "semester": 6, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "Retno Damayanti, S.Pd., M.T.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-  {"id": "J-48", "tanggal": "2026-06-19", "hari": "Jumat", "jam": "10.30 - 11.30", "mataKuliah": "Komputasi Hijau", "kelas": "TI3D", "semester": 6, "ruang": "Ruang Teori - 6 (Sipil Lt5) 5-06", "pengawas": "Retno Damayanti, S.Pd., M.T.", "jenisUjian": "Praktikum", "status": "Terjadwal"},
-];
+export const jadwalList: Jadwal[] = [];
 
 export type Ruang = {
   nama: string;
@@ -218,42 +144,7 @@ export type Ruang = {
   penggunaan: string;
 };
 
-export const ruangList: Ruang[] = [
-  {"nama": "Lab Proyek - 1 (Sipil Lt5-R 5-08)", "gedung": "Gedung Sipil", "lantai": 5, "kapasitas": 24, "status": "Digunakan", "penggunaan": "12 sesi UAS"},
-  {"nama": "Ruang Teori - 1(Sipil Lt5) 5-01", "gedung": "Gedung Sipil", "lantai": 5, "kapasitas": 32, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Ruang Teori - 2(Sipil Lt5) 5-02", "gedung": "Gedung Sipil", "lantai": 5, "kapasitas": 32, "status": "Digunakan", "penggunaan": "12 sesi UAS"},
-  {"nama": "Ruang Teori - 3(Sipil Lt5) 5-03", "gedung": "Gedung Sipil", "lantai": 5, "kapasitas": 32, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Ruang Teori - 4(Sipil Lt5) 5-04", "gedung": "Gedung Sipil", "lantai": 5, "kapasitas": 32, "status": "Digunakan", "penggunaan": "12 sesi UAS"},
-  {"nama": "Ruang Teori - 5 (Sipil Lt5) 5-05", "gedung": "Gedung Sipil", "lantai": 5, "kapasitas": 32, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Ruang Teori - 6 (Sipil Lt5) 5-06", "gedung": "Gedung Sipil", "lantai": 5, "kapasitas": 32, "status": "Digunakan", "penggunaan": "12 sesi UAS"},
-  {"nama": "Ruang Teori - 7(Sipil Lt5) 5-07", "gedung": "Gedung Sipil", "lantai": 5, "kapasitas": 32, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab Proyek - 2 (Sipil Lt6 - R 6-16)", "gedung": "Gedung Sipil", "lantai": 6, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab SI - 1 (Sipil Lt6 - R 6-15)", "gedung": "Gedung Sipil", "lantai": 6, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab SI - 2 (Sipil Lt6 - R 6-17)", "gedung": "Gedung Sipil", "lantai": 6, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab SI - 3 (Sipil Lt6 - R 6-19)", "gedung": "Gedung Sipil", "lantai": 6, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "LPR - 8 (Sipil Lt7 - R 7-14)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "LPR - 1 (Sipil Lt7 - R 7-01)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "LPR - 2 (Sipil Lt7 - R 7-02)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "LPR - 3 (Sipil Lt7 - R 7-03)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "LPR - 4 (Sipil Lt7 - R 7-04)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "LPR - 5 (Sipil Lt7 - R 7-05)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "LPR - 6 (Sipil Lt7 - R 7-06)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "LPR - 7 (Sipil Lt7 - R7-07)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab ERP (Sipil Lt7 - R 7-17)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab Proyek - 4 (Sipil Lt7 - R 7-19)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab Sist Komputer & Jaringan - 1 (Sipil Lt7 - R 7-08)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab Sist Komputer & Jaringan - 2 (Sipil Lt7 - R 7-13)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab Sist Komputer & Jaringan - 3 (Sipil Lt7 - R 7-15)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab Sistem Cerdas - 1 (LAI)(Sipil Lt7 - R 7-20)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab Visi Komputer(LIG) - 1 (Sipil Lt7 - R 7-16)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab Visi Komputer(LIG) - 2 (Sipil Lt7 - R 7-18)", "gedung": "Gedung Sipil", "lantai": 7, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab Riset xxx (Sipil Lt8 - R 8-04)", "gedung": "Gedung Sipil", "lantai": 8, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Lab Sistem Cerdas - 2 (Sipil Lt 8 - R 8-08)", "gedung": "Gedung Sipil", "lantai": 8, "kapasitas": 24, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Ruang Teori - 08 (Sipil Lt8 - R 8-13)", "gedung": "Gedung Sipil", "lantai": 8, "kapasitas": 32, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Ruang Teori - 09 (Sipil Lt8 - R 8-14)", "gedung": "Gedung Sipil", "lantai": 8, "kapasitas": 32, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Ruang Teori - 11 (Sipil Lt8 - R 8-06)", "gedung": "Gedung Sipil", "lantai": 8, "kapasitas": 32, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-  {"nama": "Ruang Teori - 12 (Sipil Lt8 - R 8-07)", "gedung": "Gedung Sipil", "lantai": 8, "kapasitas": 32, "status": "Tersedia", "penggunaan": "Belum terpakai"},
-];
+export const ruangList: Ruang[] = [];
 
 export type Pengawas = {
   id: string;
@@ -266,32 +157,7 @@ export type Pengawas = {
   status: "Ditugaskan" | "Menunggu" | "Dibatalkan";
 };
 
-export const pengawasList: Pengawas[] = [
-  {"id": "P-01", "nama": "Mamluatul Hani'ah, S.Kom., M.Kom.", "tanggal": "2026-06-15", "jam": "09.15 - 10.15", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Analisis Proses Bisnis", "kelas": "SIB1A", "status": "Ditugaskan"},
-  {"id": "P-02", "nama": "Mamluatul Hani'ah, S.Kom., M.Kom.", "tanggal": "2026-06-15", "jam": "10.30 - 11.30", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Kewarganegaraan", "kelas": "SIB1A", "status": "Ditugaskan"},
-  {"id": "P-03", "nama": "Mamluatul Hani'ah, S.Kom., M.Kom.", "tanggal": "2026-06-15", "jam": "11.45 - 12.45", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Aljabar Linier", "kelas": "TI1A", "status": "Ditugaskan"},
-  {"id": "P-04", "nama": "Mamluatul Hani'ah, S.Kom., M.Kom.", "tanggal": "2026-06-15", "jam": "13.00 - 14.00", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Rekayasa Perangkat Lunak", "kelas": "TI1A", "status": "Ditugaskan"},
-  {"id": "P-05", "nama": "Dr. Yuri Ariyanto, S.Kom., M.Kom.", "tanggal": "2026-06-17", "jam": "09.15 - 10.15", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Agama", "kelas": "TI1A", "status": "Ditugaskan"},
-  {"id": "P-06", "nama": "Dr. Yuri Ariyanto, S.Kom., M.Kom.", "tanggal": "2026-06-17", "jam": "10.30 - 11.30", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Desain Antarmuka", "kelas": "TI1A", "status": "Ditugaskan"},
-  {"id": "P-07", "nama": "Titis Octary Satrio, S.ST., M.MT.", "tanggal": "2026-06-17", "jam": "11.45 - 12.45", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Pengenalan Sistem Informasi", "kelas": "SIB1A", "status": "Ditugaskan"},
-  {"id": "P-08", "nama": "Titis Octary Satrio, S.ST., M.MT.", "tanggal": "2026-06-17", "jam": "13.00 - 14.00", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Matematika Lanjut", "kelas": "SIB1A", "status": "Ditugaskan"},
-  {"id": "P-09", "nama": "Dr. Yuri Ariyanto, S.Kom., M.Kom.", "tanggal": "2026-06-18", "jam": "09.15 - 10.15", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Algoritma dan Struktur Data", "kelas": "SIB1A", "status": "Ditugaskan"},
-  {"id": "P-10", "nama": "Dr. Yuri Ariyanto, S.Kom., M.Kom.", "tanggal": "2026-06-18", "jam": "10.30 - 11.30", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Basis Data", "kelas": "SIB1A", "status": "Ditugaskan"},
-  {"id": "P-11", "nama": "Vivi Nur Wijayaningrum, S.Kom., M.Kom.", "tanggal": "2026-06-19", "jam": "09.15 - 10.15", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Pengembangan Karir", "kelas": "TI3A", "status": "Ditugaskan"},
-  {"id": "P-12", "nama": "Vivi Nur Wijayaningrum, S.Kom., M.Kom.", "tanggal": "2026-06-19", "jam": "10.30 - 11.30", "ruang": "Ruang Teori - 2(Sipil Lt5) 5-02", "mataKuliah": "Komputasi Hijau", "kelas": "TI3A", "status": "Ditugaskan"},
-  {"id": "P-13", "nama": "Ariadi Retno Tri Hayati Ririd, S.Kom., M.Kom.", "tanggal": "2026-06-15", "jam": "09.15 - 10.15", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Analisis Proses Bisnis", "kelas": "SIB1B", "status": "Ditugaskan"},
-  {"id": "P-14", "nama": "Ariadi Retno Tri Hayati Ririd, S.Kom., M.Kom.", "tanggal": "2026-06-15", "jam": "10.30 - 11.30", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Kewarganegaraan", "kelas": "SIB1B", "status": "Ditugaskan"},
-  {"id": "P-15", "nama": "Habibie Ed Dien, S.Kom., M.T.", "tanggal": "2026-06-15", "jam": "11.45 - 12.45", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Aljabar Linier", "kelas": "TI1B", "status": "Ditugaskan"},
-  {"id": "P-16", "nama": "Habibie Ed Dien, S.Kom., M.T.", "tanggal": "2026-06-15", "jam": "13.00 - 14.00", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Rekayasa Perangkat Lunak", "kelas": "TI1B", "status": "Ditugaskan"},
-  {"id": "P-17", "nama": "Wilda Imama Sabilla, S.Kom., M.Kom.", "tanggal": "2026-06-17", "jam": "09.15 - 10.15", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Agama", "kelas": "TI1B", "status": "Ditugaskan"},
-  {"id": "P-18", "nama": "Wilda Imama Sabilla, S.Kom., M.Kom.", "tanggal": "2026-06-17", "jam": "10.30 - 11.30", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Desain Antarmuka", "kelas": "TI1B", "status": "Ditugaskan"},
-  {"id": "P-19", "nama": "Usman Nurhasan, S.Kom., M.T.", "tanggal": "2026-06-17", "jam": "11.45 - 12.45", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Pengenalan Sistem Informasi", "kelas": "SIB1B", "status": "Ditugaskan"},
-  {"id": "P-20", "nama": "Usman Nurhasan, S.Kom., M.T.", "tanggal": "2026-06-17", "jam": "13.00 - 14.00", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Matematika Lanjut", "kelas": "SIB1B", "status": "Ditugaskan"},
-  {"id": "P-21", "nama": "Triana Fatmawati, S.T., M.T.", "tanggal": "2026-06-18", "jam": "09.15 - 10.15", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Algoritma dan Struktur Data", "kelas": "SIB1B", "status": "Ditugaskan"},
-  {"id": "P-22", "nama": "Triana Fatmawati, S.T., M.T.", "tanggal": "2026-06-18", "jam": "10.30 - 11.30", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Basis Data", "kelas": "SIB1B", "status": "Ditugaskan"},
-  {"id": "P-23", "nama": "Rokhimatul Wakhidah, S.Pd., M.T.", "tanggal": "2026-06-19", "jam": "09.15 - 10.15", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Pengembangan Karir", "kelas": "TI3B", "status": "Ditugaskan"},
-  {"id": "P-24", "nama": "Rokhimatul Wakhidah, S.Pd., M.T.", "tanggal": "2026-06-19", "jam": "10.30 - 11.30", "ruang": "Ruang Teori - 4(Sipil Lt5) 5-04", "mataKuliah": "Komputasi Hijau", "kelas": "TI3B", "status": "Ditugaskan"},
-];
+export const pengawasList: Pengawas[] = [];
 
 export type Pengumuman = {
   id: string;
