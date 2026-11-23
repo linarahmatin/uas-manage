@@ -1,3 +1,4 @@
+
 import { createFileRoute } from "@tanstack/react-router";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -49,10 +50,18 @@ export const Route = createFileRoute("/admin/mata-kuliah")({
       { title: "Data Mata Kuliah — Sistem Manajemen UAS TI" },
       {
         name: "description",
-        content: "Kelola data mata kuliah peserta UAS: kode, semester, kelas, SKS, dosen pengampu, dan jenis ujian.",
+        content:
+          "Kelola data mata kuliah peserta UAS: kode, semester, kelas, SKS, dosen pengampu, dan jenis ujian.",
       },
-      { property: "og:title", content: "Data Mata Kuliah — Sistem Manajemen UAS TI" },
-      { property: "og:description", content: "CRUD data mata kuliah untuk pelaksanaan UAS Jurusan Teknologi Informasi." },
+      {
+        property: "og:title",
+        content: "Data Mata Kuliah — Sistem Manajemen UAS TI",
+      },
+      {
+        property: "og:description",
+        content:
+          "CRUD data mata kuliah untuk pelaksanaan UAS Jurusan Teknologi Informasi.",
+      },
     ],
   }),
   component: MataKuliahPage,
@@ -71,6 +80,7 @@ const emptyMataKuliah: MataKuliah = {
 
 function MataKuliahPage() {
   const crud = useCrud<MataKuliah>(mataKuliahStore, emptyMataKuliah);
+
   const table = useTable<MataKuliah>(
     crud.rows,
     (row, q) =>
@@ -78,11 +88,14 @@ function MataKuliahPage() {
       row.kode.toLowerCase().includes(q) ||
       row.dosen.toLowerCase().includes(q),
   );
+
   const [semester, setSemester] = useState("all");
 
   const applySemester = (v: string) => {
     setSemester(v);
-    table.filter((row) => v === "all" || String(row.semester) === v);
+    table.filter(
+      (row) => v === "all" || String(row.semester) === v,
+    );
   };
 
   const handleSave = () => {
@@ -90,8 +103,14 @@ function MataKuliahPage() {
       toast.error("Kode dan nama mata kuliah wajib diisi.");
       return;
     }
+
     const wasEditing = crud.save();
-    toast.success(wasEditing ? "Mata kuliah diperbarui." : "Mata kuliah ditambahkan.");
+
+    toast.success(
+      wasEditing
+        ? "Mata kuliah diperbarui."
+        : "Mata kuliah ditambahkan.",
+    );
   };
 
   return (
@@ -102,7 +121,8 @@ function MataKuliahPage() {
       description="Daftar mata kuliah yang diujikan pada UAS semester ini."
       actions={
         <Button size="sm" onClick={crud.openCreate}>
-          <Plus className="mr-2 size-4" /> Tambah Mata Kuliah
+          <Plus className="mr-2 size-4" />
+          Tambah Mata Kuliah
         </Button>
       }
     >
@@ -114,6 +134,7 @@ function MataKuliahPage() {
               onChange={table.search}
               placeholder="Cari kode, nama, atau dosen..."
             />
+
             <div className="sm:ml-auto">
               <FilterSelect
                 label="Semester"
@@ -127,7 +148,11 @@ function MataKuliahPage() {
           {table.paged.length === 0 ? (
             <EmptyState
               action={
-                <Button size="sm" variant="outline" onClick={() => table.search("")}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => table.search("")}
+                >
                   Reset pencarian
                 </Button>
               }
@@ -137,6 +162,9 @@ function MataKuliahPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-14 text-center">
+                      No.
+                    </TableHead>
                     <TableHead>Kode</TableHead>
                     <TableHead>Nama Mata Kuliah</TableHead>
                     <TableHead>Semester</TableHead>
@@ -145,24 +173,45 @@ function MataKuliahPage() {
                     <TableHead>Dosen Pengampu</TableHead>
                     <TableHead>Jenis Ujian</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Aksi</TableHead>
+                    <TableHead className="text-right">
+                      Aksi
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
+
                 <TableBody>
-                  {table.paged.map((row) => (
+                  {table.paged.map((row, index) => (
                     <TableRow key={row.kode + row.kelas}>
-                      <TableCell className="font-mono text-xs font-semibold">{row.kode}</TableCell>
-                      <TableCell className="font-medium">{row.nama}</TableCell>
+                      <TableCell className="text-center text-muted-foreground">
+                        {(table.page - 1) * 5 + index + 1}
+                      </TableCell>
+
+                      <TableCell className="font-mono text-xs font-semibold">
+                        {row.kode}
+                      </TableCell>
+
+                      <TableCell className="font-medium">
+                        {row.nama}
+                      </TableCell>
+
                       <TableCell>{row.semester}</TableCell>
                       <TableCell>{row.kelas}</TableCell>
                       <TableCell>{row.sks}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">{row.dosen}</TableCell>
-                      <TableCell>
-                        <span className="text-sm">{row.jenisUjian}</span>
+
+                      <TableCell className="text-sm text-muted-foreground">
+                        {row.dosen}
                       </TableCell>
+
+                      <TableCell>
+                        <span className="text-sm">
+                          {row.jenisUjian}
+                        </span>
+                      </TableCell>
+
                       <TableCell>
                         <StatusBadge status={row.status} />
                       </TableCell>
+
                       <TableCell>
                         <div className="flex justify-end gap-1">
                           <Button
@@ -173,6 +222,7 @@ function MataKuliahPage() {
                           >
                             <Pencil className="size-4" />
                           </Button>
+
                           <Button
                             size="icon"
                             variant="ghost"
@@ -191,16 +241,28 @@ function MataKuliahPage() {
             </div>
           )}
 
-          <Pagination page={table.page} totalPages={table.totalPages} total={table.total} onPage={table.setPage} />
+          <Pagination
+            page={table.page}
+            totalPages={table.totalPages}
+            total={table.total}
+            onPage={table.setPage}
+          />
         </CardContent>
       </Card>
 
       <Dialog open={crud.open} onOpenChange={crud.setOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{crud.isEditing ? "Edit Mata Kuliah" : "Tambah Mata Kuliah"}</DialogTitle>
-            <DialogDescription>Data mata kuliah dipakai saat penyusunan jadwal dan soal UAS.</DialogDescription>
+            <DialogTitle>
+              {crud.isEditing
+                ? "Edit Mata Kuliah"
+                : "Tambah Mata Kuliah"}
+            </DialogTitle>
+            <DialogDescription>
+              Data mata kuliah dipakai saat penyusunan jadwal dan soal UAS.
+            </DialogDescription>
           </DialogHeader>
+
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label>Kode</Label>
@@ -210,6 +272,7 @@ function MataKuliahPage() {
                 placeholder="TI3201"
               />
             </div>
+
             <div className="space-y-2">
               <Label>Nama Mata Kuliah</Label>
               <Input
@@ -218,14 +281,18 @@ function MataKuliahPage() {
                 placeholder="Basis Data"
               />
             </div>
+
             <div className="space-y-2">
               <Label>Semester</Label>
               <Input
                 type="number"
                 value={crud.form.semester}
-                onChange={(e) => crud.set("semester", Number(e.target.value))}
+                onChange={(e) =>
+                  crud.set("semester", Number(e.target.value))
+                }
               />
             </div>
+
             <div className="space-y-2">
               <Label>Kelas</Label>
               <Input
@@ -234,32 +301,44 @@ function MataKuliahPage() {
                 placeholder="TI-6A"
               />
             </div>
+
             <div className="space-y-2">
               <Label>SKS</Label>
               <Input
                 type="number"
                 value={crud.form.sks}
-                onChange={(e) => crud.set("sks", Number(e.target.value))}
+                onChange={(e) =>
+                  crud.set("sks", Number(e.target.value))
+                }
               />
             </div>
+
             <div className="space-y-2">
               <Label>Jenis Ujian</Label>
               <Select
                 value={crud.form.jenisUjian}
-                onValueChange={(v) => crud.set("jenisUjian", v as MataKuliah["jenisUjian"])}
+                onValueChange={(v) =>
+                  crud.set(
+                    "jenisUjian",
+                    v as MataKuliah["jenisUjian"],
+                  )
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {["Tulis", "Praktikum", "Take Home", "Online"].map((o) => (
-                    <SelectItem key={o} value={o}>
-                      {o}
-                    </SelectItem>
-                  ))}
+                  {["Tulis", "Praktikum", "Take Home", "Online"].map(
+                    (o) => (
+                      <SelectItem key={o} value={o}>
+                        {o}
+                      </SelectItem>
+                    ),
+                  )}
                 </SelectContent>
               </Select>
             </div>
+
             <div className="space-y-2">
               <Label>Dosen Pengampu</Label>
               <Input
@@ -268,11 +347,17 @@ function MataKuliahPage() {
                 placeholder="Nama, gelar"
               />
             </div>
+
             <div className="space-y-2">
               <Label>Status</Label>
               <Select
                 value={crud.form.status}
-                onValueChange={(v) => crud.set("status", v as MataKuliah["status"])}
+                onValueChange={(v) =>
+                  crud.set(
+                    "status",
+                    v as MataKuliah["status"],
+                  )
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -287,8 +372,12 @@ function MataKuliahPage() {
               </Select>
             </div>
           </div>
+
           <DialogFooter>
-            <Button variant="outline" onClick={() => crud.setOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => crud.setOpen(false)}
+            >
               Batal
             </Button>
             <Button onClick={handleSave}>Simpan</Button>
